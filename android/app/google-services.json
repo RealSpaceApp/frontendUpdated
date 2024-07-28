@@ -1,0 +1,57 @@
+{
+  "project_info": {
+    "project_number": "613996156544",
+    "project_id": "realspace-429919",
+    "storage_bucket": "realspace-429919.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613996156544:android:70ca35ae394df2162e7865",
+        "android_client_info": {
+          "package_name": "com.realspace.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFx0RBC48rSMgtFWZ7bYbhaZyiNM5nWE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613996156544:android:07a65ea124ea58292e7865",
+        "android_client_info": {
+          "package_name": "com.realspace3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613996156544-390fbjusqhr7j2mv4fljki69u55je212.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.realspace3",
+            "certificate_hash": "6d1c2e80252fd56807f3a7daa6504f340efab05f"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFx0RBC48rSMgtFWZ7bYbhaZyiNM5nWE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
