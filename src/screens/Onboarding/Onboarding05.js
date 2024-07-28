@@ -8,7 +8,8 @@ import Apple from '../../../assets/onboarding/Apple';
 
 GoogleSignin.configure({
   webClientId: '613996156544-390fbjusqhr7j2mv4fljki69u55je212.apps.googleusercontent.com', // Your OAuth 2.0 client ID
-  offlineAccess: false,
+  offlineAccess: true,
+  forceCodeForRefreshToken: true,
 });
 
 const Onboarding05 = ({ navigation }) => {
