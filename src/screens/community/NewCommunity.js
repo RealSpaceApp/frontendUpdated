@@ -10,7 +10,7 @@ const NewCommunity = ({ navigation }) => {
 
   const hostCommunity = async () => {
     try {
-      const response = await axios.post('http://172.21.192.1:8080/community/register', {
+      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/community/register', {
         name: title,
         description: description,
         email: email,

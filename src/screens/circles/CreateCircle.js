@@ -54,7 +54,7 @@ const CreateCircle = ({ navigation, route }) => {
             return;
           }
 
-          const response = await axios.get(`http://172.21.192.1:8080/circles/${id}`, {
+          const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}`, {
             headers: {
               Cookie: cookie || '',
             },
@@ -109,7 +109,7 @@ const CreateCircle = ({ navigation, route }) => {
       let response;
       if (id) {
         // Update existing circle
-        response = await axios.post(`http://172.21.192.1:8080/circles/${id}/update`, formData, {
+        response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/update`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Cookie: cookie || '',
@@ -117,7 +117,7 @@ const CreateCircle = ({ navigation, route }) => {
         });
       } else {
         // Create new circle
-        response = await axios.post('http://172.21.192.1:8080/circles/create', formData, {
+        response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/circles/create', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Cookie: cookie || '',

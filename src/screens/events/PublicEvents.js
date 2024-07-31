@@ -18,7 +18,7 @@ const PublicEvents = () => {
       }
 
       const updatedEvents = await Promise.all(events.map(async (event) => {
-        const response = await axios.get(`http://172.21.192.1:8080/event/${event.id}/my-reaction`, {
+        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${event.id}/my-reaction`, {
           headers: {
             Cookie: cookie || '',
           },
@@ -51,7 +51,7 @@ const PublicEvents = () => {
         return;
       }
 
-      const response = await axios.get('http://172.21.192.1:8080/event/feed/public', {
+      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/public', {
         headers: {
           Cookie: cookie || '',
         },
@@ -78,7 +78,7 @@ const PublicEvents = () => {
         return;
       }
 
-      const response = await axios.get(`http://172.21.192.1:8080/user/profile/${userId}`, {
+      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/${userId}`, {
         headers: {
           Cookie: cookie || '',
         },

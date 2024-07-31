@@ -61,7 +61,7 @@ const LandingPageProfile = ({ navigation }) => {
         },
       });
       const id = '2ca14736-12a1-4ac1-8fba-bd639be71b1a';
-      const response = await axiosInstance.get(`http://172.21.192.1:8080/user/profile/`);
+      const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/`);
       console.debug('LandingPageProfile Profile Response:', response.data);
 
       setUserData({
@@ -87,7 +87,7 @@ const LandingPageProfile = ({ navigation }) => {
           Cookie: cookie || '',
         },
       });
-      const response = await axiosInstance.get(`http://172.21.192.1:8080/friends/`);
+      const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/friends/`);
       console.debug('friends list', response.data);
 
       setFriendsData(response.data);

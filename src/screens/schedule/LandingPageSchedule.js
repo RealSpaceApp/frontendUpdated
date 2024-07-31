@@ -17,7 +17,7 @@ const LandingPageSchedule = () => {
 
   const fetchUpcomingEvents = async () => {
     try {
-      const response = await fetch('http://172.21.192.1:8080/event/schedule/upcoming-event-dates', {
+      const response = await fetch('https://realspace-otq5wtkqba-uc.a.run.app/event/schedule/upcoming-event-dates', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const LandingPageSchedule = () => {
 
   const fetchEventsForDate = async (date) => {
     try {
-      const response = await fetch(`http://172.21.192.1:8080/event/schedule/${date}T00:00:00Z`, {
+      const response = await fetch(`https://realspace-otq5wtkqba-uc.a.run.app/event/schedule/${date}T00:00:00Z`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

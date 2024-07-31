@@ -18,7 +18,7 @@ const Hosting = () => {
       }
 
       const updatedEvents = await Promise.all(events.map(async (event) => {
-        const response = await axios.get(`http://172.21.192.1:8080/event/${event.id}/all-notes`, {
+        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${event.id}/all-notes`, {
           headers: {
             Cookie: cookie || '',
           },
@@ -49,7 +49,7 @@ const Hosting = () => {
         return;
       }
 
-      const response = await axios.get('http://172.21.192.1:8080/event/feed/hosting', {
+      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/hosting', {
         headers: {
           Cookie: cookie || '',
         },
@@ -80,7 +80,7 @@ const Hosting = () => {
             Cookie: cookie || '',
           },
         });
-        const response = await axiosInstance.get('http://172.21.192.1:8080/user/profile');
+        const response = await axiosInstance.get('https://realspace-otq5wtkqba-uc.a.run.app/user/profile');
         setUserData({
           name: response.data.name
         });
@@ -99,7 +99,7 @@ const Hosting = () => {
         console.warn('No access token found');
         return;
       }
-      const response = await axios.post('http://172.21.192.1:8080/event/delete', {
+      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/event/delete', {
         ID: eventId,
       }, {
         headers: {

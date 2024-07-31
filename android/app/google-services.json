@@ -20,6 +20,18 @@
             "package_name": "com.realspace3",
             "certificate_hash": "6d1c2e80252fd56807f3a7daa6504f340efab05f"
           }
+        },
+        {
+          "client_id": "613996156544-mb6nvb58reihle8tb82jo39t6d6itmha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.realspace3",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "613996156544-2e5oc8vqug12s0ti92o4majdtl722331.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -29,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613996156544-2e5oc8vqug12s0ti92o4majdtl722331.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

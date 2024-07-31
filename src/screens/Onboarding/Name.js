@@ -27,7 +27,7 @@ const Name = ({ navigation }) => {
       const formData = new FormData();
       formData.append('name', name);
 
-      const response = await axios.post(`http://172.21.192.1:8080/user/save-profile`, formData, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Cookie: cookie || '',

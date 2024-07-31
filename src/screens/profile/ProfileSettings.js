@@ -20,7 +20,7 @@ const ProfileSettings = ({ navigation }) => {
         console.warn('No access token found');
         return;
       }
-      const response = await fetch('http://172.21.192.1:8080/friends', {
+      const response = await fetch('https://realspace-otq5wtkqba-uc.a.run.app/friends', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

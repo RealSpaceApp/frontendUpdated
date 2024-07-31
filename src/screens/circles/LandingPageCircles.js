@@ -20,7 +20,7 @@ const LandingPageCircles = ({ navigation }) => {
           return;
         }
 
-        const response = await axios.get('http://172.21.192.1:8080/circles/joined-circles', {
+        const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/circles/joined-circles', {
           headers: {
             Cookie: cookie || '',
           },

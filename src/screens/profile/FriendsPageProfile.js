@@ -59,7 +59,7 @@ const LandingPageProfile = ({ id }) => {
           Cookie: cookie || '',
         },
       });
-      const response = await axiosInstance.get(`http://172.21.192.1:8080/user/profile/${id}`);
+      const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/${id}`);
       console.debug('LandingPageProfile Profile Response:', response.data);
 
       setUserData({

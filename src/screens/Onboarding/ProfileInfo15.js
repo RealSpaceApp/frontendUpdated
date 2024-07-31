@@ -15,7 +15,7 @@ const ProfileInfo15 = ({ navigation }) => {
   const handleRegisterPhoneNumber = async () => {
     try {
       const formattedPhoneNumber = selectedDDD + phoneNumber;
-      await axios.post(`http://172.21.192.1:8080/auth/phone/register`, {
+      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/register`, {
         "phone": formattedPhoneNumber
       });
       navigation.navigate('ProfileInfo17', { phoneNumber: formattedPhoneNumber });

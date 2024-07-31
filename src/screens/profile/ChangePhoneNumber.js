@@ -18,7 +18,7 @@ const ChangePhoneNumber = ({ navigation }) => {
     try {
       const formattedPhoneNumber = selectedDDD + phoneNumber;
       setStep(2)
-      await axios.post(`http://172.21.192.1:8080/auth/phone/register`, {
+      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/register`, {
         phone: '+351931938806'
       });
 
@@ -31,7 +31,7 @@ const ChangePhoneNumber = ({ navigation }) => {
     try {
       const formattedPhoneNumber = selectedDDD + phoneNumber;
       setStep(4)
-      await axios.post(`http://172.21.192.1:8080/auth/phone/register`, {
+      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/register`, {
         phone: formattedPhoneNumber
       });
 
@@ -54,7 +54,7 @@ const ChangePhoneNumber = ({ navigation }) => {
   const handleVerifyPhoneNumber = async () => {
     try {
       const formattedOtp = otp.join('');
-      const response = await axios.post(`http://172.21.192.1:8080/auth/phone/verify`, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/verify`, {
         phone: '+351931938806',
         otp: Number(formattedOtp),
       });

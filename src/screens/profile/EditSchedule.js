@@ -38,7 +38,7 @@ const AddSchedule = ({ navigation }) => {
         }
         
         const user_id = '4a027aa5-dc0b-4e67-8c3f-97cdb1c46853';
-        const response = await axios.get(`http://172.21.192.1:8080/call-schedule/get-schedules/${user_id}`, {
+        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/get-schedules/${user_id}`, {
           headers: {
             Cookie: cookie || '',
           },
@@ -84,14 +84,14 @@ const AddSchedule = ({ navigation }) => {
 
       let response;
       if (scheduleId) {
-        response = await axios.post(`http://172.21.192.1:8080/call-schedule/update/${scheduleId}`, body, {
+        response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/update/${scheduleId}`, body, {
           headers: {
             'Content-Type': 'application/json',
             Cookie: cookie || '',
           },
         });
       } else {
-        response = await axios.post('http://172.21.192.1:8080/call-schedule/create', body, {
+        response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/create', body, {
           headers: {
             'Content-Type': 'application/json',
             Cookie: cookie || '',
@@ -125,7 +125,7 @@ const AddSchedule = ({ navigation }) => {
         return;
       }
 
-      const response = await axios.post(`http://172.21.192.1:8080/call-schedule/remove/${scheduleId}`, {}, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/remove/${scheduleId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           Cookie: cookie || '',

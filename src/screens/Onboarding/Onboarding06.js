@@ -14,21 +14,18 @@ const Onboarding06 = () => {
   useEffect(() => {
     const handleGoogleSignIn = async () => {
       try {
-        const response = await axios.post('http://172.21.192.1:8080/auth/google/signin', {
+        const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/auth/google/signin', {
           token,
         });
 
         const setCookieHeader = response.headers["set-cookie"];
-
         if (setCookieHeader) {
           const accessTokenCookie = setCookieHeader.find(cookie => cookie.startsWith('access_token='));
 
           if (accessTokenCookie) {
-            const accessToken = accessTokenCookie.split(';')[0];
+            const accessToken = accessTokenCookie.split(';')[0].split('=')[1];
 
-            await AsyncStorage.setItem('cookie', accessToken);
-
-            console.log('Cookie armazenado com sucesso', accessToken);
+            await AsyncStorage.setItem('access_token', accessToken);
           } else {
             console.warn('Access token cookie not found in Set-Cookie header');
           }

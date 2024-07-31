@@ -44,7 +44,7 @@ const ManageMembers = () => {
         return;
       }
 
-      const response = await axios.get('http://172.21.192.1:8080/event/feed/circles', {
+      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/circles', {
         headers: {
           Cookie: cookie || '',
         },
@@ -71,7 +71,7 @@ const ManageMembers = () => {
         return;
       }
 
-      const response = await axios.get(`http://172.21.192.1:8080/user/profile/${userId}`, {
+      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/${userId}`, {
         headers: {
           Cookie: cookie || '',
         },
@@ -100,7 +100,7 @@ const ManageMembers = () => {
         return;
       }
 
-      const response = await axios.get(`http://172.21.192.1:8080/circles/${id}/members`, {
+      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/members`, {
         headers: {
           Cookie: cookie || '',
         },
@@ -155,7 +155,7 @@ const ManageMembers = () => {
         return;
       }
 
-      const response = await axios.post(`http://172.21.192.1:8080/circles/${id}/remove-member/${memberId}`, {}, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/remove-member/${memberId}`, {}, {
         headers: {
           Cookie: cookie || '',
         },
@@ -181,7 +181,7 @@ const ManageMembers = () => {
         return;
       }
 
-      const response = await axios.post(`http://172.21.192.1:8080/circles/${id}/make-moderator/${memberId}`, {}, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/make-moderator/${memberId}`, {}, {
         headers: {
           Cookie: cookie || '',
         },

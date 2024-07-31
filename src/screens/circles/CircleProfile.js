@@ -41,7 +41,7 @@ const LandingPageProfile = () => {
         return;
       }
 
-      const response = await axios.get(`http://172.21.192.1:8080/circles/${id}`, {
+      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}`, {
         headers: {
           Cookie: cookie || '',
         },
@@ -84,7 +84,7 @@ const LandingPageProfile = () => {
         return;
       }
   
-      const response = await axios.post(`http://172.21.192.1:8080/circles/${id}/delete`, {}, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/delete`, {}, {
         headers: {
           Cookie: cookie || '',
         },
@@ -110,7 +110,7 @@ const LandingPageProfile = () => {
         return;
       }
   
-      const response = await axios.post(`http://172.21.192.1:8080/circles/${id}/leave`, {}, {
+      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/leave`, {}, {
         headers: {
           Cookie: cookie || '',
         },

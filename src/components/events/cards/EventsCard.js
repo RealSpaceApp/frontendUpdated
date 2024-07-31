@@ -64,7 +64,7 @@ const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitl
         note_time: new Date().toISOString()
       };
 
-      const response = await axios.post('http://172.21.192.1:8080/event/react', payload, {
+      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/event/react', payload, {
         headers: {
           Cookie: cookie || '',
           'Content-Type': 'application/json',

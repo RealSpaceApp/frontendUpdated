@@ -99,7 +99,7 @@ const CreateEvent = ({ navigation, route }) => {
             return;
           }
 
-          const response = await axios.get(`http://172.21.192.1:8080/event/${eventId}`, {
+          const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${eventId}`, {
             headers: {
               Cookie: cookie || '',
             },
@@ -154,7 +154,7 @@ const CreateEvent = ({ navigation, route }) => {
           end_time: "2024-09-20T15:00:00Z",
         };
 
-        response = await axios.post(`http://172.21.192.1:8080/event/update`, eventPayload, {
+        response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/event/update`, eventPayload, {
           headers: {
             'Content-Type': 'application/json',
             Cookie: cookie || '',
@@ -174,7 +174,7 @@ const CreateEvent = ({ navigation, route }) => {
         if (eventType.toLowerCase() === 'circles') {
           eventPayload.select_circle = ['fbd31487-fc5a-458e-81c2-e18f80f010c0'];
         }
-        response = await axios.post('http://172.21.192.1:8080/event/create', eventPayload, {
+        response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/event/create', eventPayload, {
           headers: {
             'Content-Type': 'application/json',
             Cookie: cookie || '',

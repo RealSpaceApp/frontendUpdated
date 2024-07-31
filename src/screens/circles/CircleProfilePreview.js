@@ -32,7 +32,7 @@ const CircleProfilePreview = ({ navigation }) => {
         return;
       }
 
-      const response = await axios.get('http://172.21.192.1:8080/event/feed/circles', {
+      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/circles', {
         headers: {
           Cookie: cookie || '',
         },

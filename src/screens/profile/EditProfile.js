@@ -28,7 +28,7 @@ const EditProfile = ({ navigation }) => {
         },
       });
 
-      const response = await axiosInstance.get('http://172.21.192.1:8080/user/profile');
+      const response = await axiosInstance.get('https://realspace-otq5wtkqba-uc.a.run.app/user/profile');
       console.debug('LandingPageProfile Profile Response:', response.data);
 
       setUserData({
@@ -125,7 +125,7 @@ const EditProfile = ({ navigation }) => {
         });
       }
 
-      const response = await axios.post('http://172.21.192.1:8080/user/save-profile', formData, {
+      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Cookie: cookie || '',

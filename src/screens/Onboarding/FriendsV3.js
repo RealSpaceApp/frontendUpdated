@@ -29,7 +29,7 @@ const FriendsV3 = ({ navigation }) => {
             Cookie: cookie || '',
           },
         });
-        const response = await axiosInstance.get(`http://172.21.192.1:8080/user/profile`);
+        const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile`);
         console.debug('FriendsV3 Profile Response:', response.data);
 
         setUserData({
