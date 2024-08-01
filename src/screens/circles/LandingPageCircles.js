@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Switch, TouchableOpacity, Alert } from 'react-native';
-import axios from 'axios';
 import NavBar from '../../components/navbar/NavBar';
 import CirclesCard from '../../components/circles/CirclesCard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { friendEventData } from './CirclesList';
+import axiosInstance from '../../config/AxiosInstance';
+
 const LandingPageCircles = ({ navigation }) => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [circles, setCircles] = useState(friendEventData);
@@ -14,17 +14,7 @@ const LandingPageCircles = ({ navigation }) => {
   useEffect(() => {
     const fetchCircles = async () => {
       try {
-        const cookie = await AsyncStorage.getItem('cookie');
-        if (!cookie) {
-          console.warn('No access token found');
-          return;
-        }
-
-        const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/circles/joined-circles', {
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
+        const response = await axiosInstance.get('/circles/joined-circles');
 
         if (response.status === 202) {
           console.log("circles")

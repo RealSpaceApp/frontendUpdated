@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SvgXml } from 'react-native-svg';
 import CloseButton from '../../../assets/onboarding/CloseButton';
 import Drill_down from '../../../assets/onboarding/Drill_down';
+import axiosInstance from '../../config/AxiosInstance';
 
 const ChangePhoneNumber = ({ navigation }) => {
   const textInputs = Array.from({ length: 6 }, () => useRef(null));
@@ -18,7 +18,7 @@ const ChangePhoneNumber = ({ navigation }) => {
     try {
       const formattedPhoneNumber = selectedDDD + phoneNumber;
       setStep(2)
-      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/register`, {
+      await axiosInstance.post(`/auth/phone/register`, {
         phone: '+351931938806'
       });
 
@@ -31,7 +31,7 @@ const ChangePhoneNumber = ({ navigation }) => {
     try {
       const formattedPhoneNumber = selectedDDD + phoneNumber;
       setStep(4)
-      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/register`, {
+      await axiosInstance.post(`/auth/phone/register`, {
         phone: formattedPhoneNumber
       });
 
@@ -54,7 +54,7 @@ const ChangePhoneNumber = ({ navigation }) => {
   const handleVerifyPhoneNumber = async () => {
     try {
       const formattedOtp = otp.join('');
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/verify`, {
+      const response = await axiosInstance.post(`/auth/phone/verify`, {
         phone: '+351931938806',
         otp: Number(formattedOtp),
       });
@@ -304,14 +304,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 12
   },
-  codeInput: {
-    width: 43,
-    height: 43,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    textAlign: 'center',
-    fontSize: 20,
-  },
   centeredView: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -396,7 +388,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 5,
     padding: 10,
-    fontSize: 17
+    fontSize: 17,
+    color: '#2d2d2d',
   },
   codeInput: {
     width: 43,
@@ -405,6 +398,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     fontSize: 20,
+    color: '#2d2d2d',
   },
   dropdownContainer: {
     flex: 1,
@@ -447,6 +441,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
+    color: '#2d2d2d',
   },
 });
 

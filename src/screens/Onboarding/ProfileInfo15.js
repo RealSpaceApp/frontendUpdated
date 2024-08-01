@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 5,
     padding: 10,
-    fontSize: 17
+    fontSize: 17,
+    color: '#2d2d2d',
   },
   dropdownContainer: {
     flex: 1,
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
+    color: '#2d2d2d',
   },
 });
 

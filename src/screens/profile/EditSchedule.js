@@ -5,8 +5,7 @@ import { SvgXml } from 'react-native-svg';
 import CloseButton from '../../../assets/onboarding/CloseButton';
 import Drill_in from '../../../assets/onboarding/Drill_in';
 import NavBar from '../../components/navbar/NavBar';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const AddSchedule = ({ navigation }) => {
   const [selectedTime, setSelectedTime] = useState('');
@@ -31,18 +30,8 @@ const AddSchedule = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cookie = await AsyncStorage.getItem('cookie');
-        if (!cookie) {
-          console.warn('No access token found');
-          return;
-        }
-        
         const user_id = '4a027aa5-dc0b-4e67-8c3f-97cdb1c46853';
-        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/get-schedules/${user_id}`, {
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
+        const response = await axiosInstance.get(`/call-schedule/get-schedules/${user_id}`);
 
         if (response.status === 201 || response.status === 202) {
           const schedule = response.data[0];
@@ -68,13 +57,6 @@ const AddSchedule = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const body = {
         time_of_the_day: selectedTime.toLowerCase(),
         details: details,
@@ -84,17 +66,15 @@ const AddSchedule = ({ navigation }) => {
 
       let response;
       if (scheduleId) {
-        response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/update/${scheduleId}`, body, {
+        response = await axiosInstance.post(`/call-schedule/update/${scheduleId}`, body, {
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookie || '',
           },
         });
       } else {
-        response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/create', body, {
+        response = await axiosInstance.post('/call-schedule/create', body, {
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookie || '',
           },
         });
       }
@@ -113,22 +93,14 @@ const AddSchedule = ({ navigation }) => {
 
   const handleDelete = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       if (!scheduleId) {
         Alert.alert('Error', 'No schedule to delete');
         return;
       }
 
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/call-schedule/remove/${scheduleId}`, {}, {
+      const response = await axiosInstance.post(`/call-schedule/remove/${scheduleId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
-          Cookie: cookie || '',
         },
       });
 
@@ -256,7 +228,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     paddingTop: 60,
     gap: 10,
-    
     paddingTop: 10,
     marginBottom: 16,
   },
@@ -308,6 +279,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     paddingTop: 5,
     paddingHorizontal: 16,
+    color: '#2d2d2d',
   },
   divider: {
     backgroundColor: '#ADADAF',
@@ -387,6 +359,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#2d2d2d',
   },
   cancelButton: {
     marginTop: 10,

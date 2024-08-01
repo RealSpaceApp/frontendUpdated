@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
-import axios from 'axios';
 import { SvgXml } from 'react-native-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import NextButton from '../../components/events/NextButton';
 import GoBackButton from '../../components/events/GoBackButton';
 import ProgressBar from '../../components/events/ProgressBar';
 import Clear from '../../../assets/onboarding/Clear';
+import axiosInstance from '../../config/AxiosInstance';
 
 const Name = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -17,20 +16,12 @@ const Name = ({ navigation }) => {
 
   const handleNext = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const formData = new FormData();
       formData.append('name', name);
 
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile`, formData, {
+      const response = await axiosInstance.post(`/user/save-profile`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Cookie: cookie || '',
         },
       });
 

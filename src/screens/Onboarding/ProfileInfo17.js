@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 import NextButton from '../../components/events/NextButton';
 import GoBackButton from '../../components/events/GoBackButton';
 import ProgressBar from '../../components/events/ProgressBar';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
 const ProfileInfo17 = ({ navigation }) => {
   const route = useRoute();
@@ -21,14 +23,33 @@ const ProfileInfo17 = ({ navigation }) => {
   const handleVerifyPhoneNumber = async () => {
     try {
       const formattedOtp = otp.join('');
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/verify`, {
+      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/verify`, {
         phone: phoneNumber,
         otp: Number(formattedOtp),
       });
-      navigation.navigate('ProfileLook3');
+
+      const createdAt = await AsyncStorage.getItem('created_at');
+      if (createdAt) {
+        const accountAgeInHours = calculateAccountAgeInHours(createdAt);
+
+        if (accountAgeInHours > 1) {
+          navigation.navigate('LandingPageProfile');
+        } else {
+          navigation.navigate('ProfileLook3');
+        }
+      } else {
+        console.error('created_at not found in AsyncStorage');
+      }
     } catch (error) {
       console.error('Error verifying phone number:', error);
     }
+  };
+
+  const calculateAccountAgeInHours = (createdAt) => {
+    const createdAtDate = new Date(createdAt);
+    const currentDate = new Date();
+    const diffInMilliseconds = currentDate - createdAtDate;
+    return diffInMilliseconds / (1000 * 60 * 60);
   };
 
   const handleInputChange = (value, index) => {
@@ -129,6 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     fontSize: 20,
+    color: '#2d2d2d',
   },
 });
 

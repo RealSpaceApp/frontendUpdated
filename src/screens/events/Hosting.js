@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import EventsCard from '../../components/events/cards/EventsCard';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const Hosting = () => {
   const [eventData, setEventData] = useState([]);
@@ -10,19 +9,8 @@ const Hosting = () => {
 
   const fetchEventNotes = async (events) => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const updatedEvents = await Promise.all(events.map(async (event) => {
-        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${event.id}/all-notes`, {
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
+        const response = await axiosInstance.get(`/event/${event.id}/all-notes`);
 
         if (response.status === 202 || response.status === 200) {
           console.log('ALL NOTES:', response.data);
@@ -42,18 +30,7 @@ const Hosting = () => {
 
   const fetchEventData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/hosting', {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get('/event/feed/hosting');
 
       if (response.status === 202) {
         setEventData(response.data);
@@ -74,13 +51,7 @@ const Hosting = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cookie = await AsyncStorage.getItem('cookie');
-        const axiosInstance = axios.create({
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
-        const response = await axiosInstance.get('https://realspace-otq5wtkqba-uc.a.run.app/user/profile');
+        const response = await axiosInstance.get('/user/profile');
         setUserData({
           name: response.data.name
         });
@@ -93,18 +64,12 @@ const Hosting = () => {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
 
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/event/delete', {
+      const response = await axiosInstance.post('/event/delete', {
         ID: eventId,
       }, {
         headers: {
           'Content-Type': 'application/json',
-          Cookie: cookie || '',
         }
       });
 

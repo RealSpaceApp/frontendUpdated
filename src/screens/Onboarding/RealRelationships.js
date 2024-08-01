@@ -35,7 +35,7 @@ const RealRelationships = ({ navigation }) => {
           }).start(() => {
             if (container === 'blue') setCurrentContainer('red');
             if (container === 'red') setCurrentContainer('green');
-            if (container === 'green') navigation.navigate('Onboarding05');
+            if (container === 'green') navigation.navigate('Onboarding01');
           });
         } else {
           Animated.spring(pan, {

@@ -18,7 +18,7 @@ const LastOnboarding = ({ navigation }) => {
       </View>
       <View style={styles.buttonContainer}>
         <ActionButtonGreen content={'Lets go!'}
-       onPress={() => navigation.navigate('LandingPageEvents')} />
+       onPress={() => navigation.navigate('LandingPageProfile')} />
       </View>
     </View>
   );

@@ -14,20 +14,33 @@ const Onboarding06 = () => {
   useEffect(() => {
     const handleGoogleSignIn = async () => {
       try {
-        const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/auth/google/signin', {
-          token,
-        });
-
+        const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/auth/google/signin', { token });
+        await AsyncStorage.setItem('created_at', response.data.user.created_at);
+        
         const setCookieHeader = response.headers["set-cookie"];
         if (setCookieHeader) {
-          const accessTokenCookie = setCookieHeader.find(cookie => cookie.startsWith('access_token='));
-
-          if (accessTokenCookie) {
-            const accessToken = accessTokenCookie.split(';')[0].split('=')[1];
-
+          const cookies = setCookieHeader[0].split(', ');
+          let accessToken = null;
+          let refreshToken = null;
+          
+          cookies.forEach(cookie => {
+            if (cookie.startsWith('access_token=')) {
+              accessToken = cookie.split(';')[0].split('=')[1];
+            } else if (cookie.startsWith('refresh_token=')) {
+              refreshToken = cookie.split(';')[0].split('=')[1];
+            }
+          });
+          
+          if (accessToken) {
             await AsyncStorage.setItem('access_token', accessToken);
           } else {
-            console.warn('Access token cookie not found in Set-Cookie header');
+            console.warn('Access token not found in Set-Cookie header');
+          }
+          
+          if (refreshToken) {
+            await AsyncStorage.setItem('refresh_token', refreshToken);
+          } else {
+            console.warn('Refresh token not found in Set-Cookie header');
           }
         } else {
           console.warn('Set-Cookie header not found in response');
@@ -37,7 +50,7 @@ const Onboarding06 = () => {
       } catch (error) {
         console.error('Error signing in with Google:', error);
       }
-    };
+    };    
 
     handleGoogleSignIn();
   }, [navigation, token]);

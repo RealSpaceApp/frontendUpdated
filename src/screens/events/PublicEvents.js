@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import EventsCard from '../../components/events/cards/EventsCard';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const PublicEvents = () => {
   const [publicEvents, setPublicEvents] = useState([]);
@@ -10,19 +9,8 @@ const PublicEvents = () => {
 
   const fetchEventReactions = async (events) => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const updatedEvents = await Promise.all(events.map(async (event) => {
-        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${event.id}/my-reaction`, {
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
+        const response = await axiosInstance.get(`/event/${event.id}/my-reaction`);
 
         if (response.status === 202) {
           console.log(response.data);
@@ -44,18 +32,7 @@ const PublicEvents = () => {
 
   const fetchEventData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/public', {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get('/event/feed/public');
 
       if (response.status === 202) {
         console.log(response.data);
@@ -71,18 +48,7 @@ const PublicEvents = () => {
 
   const fetchUserProfile = async (userId) => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/${userId}`, {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get(`/user/profile/${userId}`);
 
       if (response.status === 202) {
         setUserProfiles(prevProfiles => ({

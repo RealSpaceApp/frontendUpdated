@@ -9,33 +9,9 @@ import FriendCardProfilePage from '../../components/profile/FriendCardProfilePag
 import friendsData from '../friends/FriendsList';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { SvgXml } from 'react-native-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import SettingsIcon from '../../../assets/profile/SettingsIcon'
-
-const scheduleData = [
-  {
-    id: 1,
-    title: "Morning",
-    time: "10:00 - 10:30 AM",
-    text: "I usually travel on public transport to my work, so you can call me then"
-  },
-  {
-    id: 2,
-    title: "Afternoon",
-    time: "03:00 - 05:30 PM",
-    text: "My work is done usually at around 3, thats a good time to chill !  "
-  },
-  {
-    id: 3,
-    title: "Night",
-    time: "10:00 PM",
-    text: "I’m available for calls after 10 pm"
-  },
-];
-
-const photo = require('../../../assets/pictures/photo2.png');
+import axiosInstance from '../../config/AxiosInstance';
 
 const LandingPageProfile = ({ navigation }) => {
   const [selected, setSelected] = useState(false);
@@ -54,14 +30,7 @@ const LandingPageProfile = ({ navigation }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      const axiosInstance = axios.create({
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
-      const id = '2ca14736-12a1-4ac1-8fba-bd639be71b1a';
-      const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/`);
+      const response = await axiosInstance.get(`/user/profile/`);
       console.debug('LandingPageProfile Profile Response:', response.data);
 
       setUserData({
@@ -81,13 +50,7 @@ const LandingPageProfile = ({ navigation }) => {
 
   const fetchFriends = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      const axiosInstance = axios.create({
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
-      const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/friends/`);
+      const response = await axiosInstance.get(`/friends/`);
       console.debug('friends list', response.data);
 
       setFriendsData(response.data);
@@ -452,6 +415,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     marginLeft: 5,
+    color: '#2d2d2d',
   },
   searchIcon: {
     marginLeft: 10,

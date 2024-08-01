@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, FlatList, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import NavBar from '../../components/navbar/NavBar';
 import ScheduleCard from '../../components/schedule/ScheduleCard';
+import axiosInstance from '../../config/AxiosInstance';
 
 const { width } = Dimensions.get('window');
 
@@ -17,13 +18,8 @@ const LandingPageSchedule = () => {
 
   const fetchUpcomingEvents = async () => {
     try {
-      const response = await fetch('https://realspace-otq5wtkqba-uc.a.run.app/event/schedule/upcoming-event-dates', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
+      const response = await axiosInstance.get('/event/schedule/upcoming-event-dates');
+      const data = response.data;
       console.log('schedule', data);
       setEvents(data);
     } catch (error) {
@@ -33,13 +29,8 @@ const LandingPageSchedule = () => {
 
   const fetchEventsForDate = async (date) => {
     try {
-      const response = await fetch(`https://realspace-otq5wtkqba-uc.a.run.app/event/schedule/${date}T00:00:00Z`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
+      const response = await axiosInstance.get(`/event/schedule/${date}T00:00:00Z`);
+      const data = response.data;
       console.log('FilteredEvents', data);
       setFilteredEvents(data);
     } catch (error) {

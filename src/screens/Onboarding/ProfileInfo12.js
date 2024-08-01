@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NextButton from '../../components/events/NextButton';
 import GoBackButton from '../../components/events/GoBackButton';
 import ProgressBar from '../../components/events/ProgressBar';
+import axiosInstance from '../../config/AxiosInstance';
 
 const ProfileInfo12 = ({ navigation }) => {
   const [birthdate, setBirthdate] = useState('');
@@ -67,22 +68,14 @@ const ProfileInfo12 = ({ navigation }) => {
   const handleNextPress = async () => {
     if (isDateValid) {
       try {
-        const cookie = await AsyncStorage.getItem('cookie');
-
-        if (!cookie) {
-          console.warn('No access token found');
-          return;
-        }
-
         const formattedDate = formatBirthdateRFC3339(birthdate);
 
         const formData = new FormData();
         formData.append('birthday', formattedDate);
 
-        const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile`, formData, {
+        const response = await axiosInstance.post(`/user/save-profile`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Cookie': cookie || '',
           },
         });
 

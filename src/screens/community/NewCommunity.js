@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, Alert } from 'react-native';
-import axios from 'axios';
 import NavBar from '../../components/navbar/NavBar';
+import axiosInstance from '../../config/AxiosInstance';
 
 const NewCommunity = ({ navigation }) => {
   const [title, setTitle] = useState('');
@@ -10,7 +10,7 @@ const NewCommunity = ({ navigation }) => {
 
   const hostCommunity = async () => {
     try {
-      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/community/register', {
+      const response = await axiosInstance.post('/community/register', {
         name: title,
         description: description,
         email: email,
@@ -130,10 +130,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlignVertical: 'top',
     marginHorizontal: 16,
+    color: '#2d2d2d',
   },
   inputTitle: {
     fontSize: 20,
     padding: 20,
+    color: '#2d2d2d',
   },
   switchContainer: {
     flexDirection: 'row',

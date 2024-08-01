@@ -5,8 +5,7 @@ import ActionButtonGreen from '../../components/events/ActionButtonGreen';
 import ProgressBar from '../../components/events/ProgressBar';
 import NextButton from '../../components/events/NextButton';
 import GoBackButton from '../../components/events/GoBackButton';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const { width } = Dimensions.get('window');
 
@@ -38,13 +37,6 @@ const ProfileInfo16 = ({ navigation }) => {
 
   const handleSaveProfile = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const formData = new FormData();
       formData.append('avatar', {
         uri: selectedImageURI,
@@ -52,10 +44,9 @@ const ProfileInfo16 = ({ navigation }) => {
         name: 'avatar.jpg',
       });
 
-      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile', formData, {
+      const response = await axiosInstance.post('/user/save-profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Cookie: cookie || '',
         },
       });
 

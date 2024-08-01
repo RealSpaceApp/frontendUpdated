@@ -10,9 +10,8 @@ import WhiteArrow from '../../../assets/onboarding/WhiteArrow';
 import Settings from '../../../assets/circles/Settings';
 import Location from '../../../assets/events/Location';
 import EventsCard from '../../components/events/cards/EventsCard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { Dropdown } from 'react-native-element-dropdown';
+import axiosInstance from '../../config/AxiosInstance';
 
 const photo = require('../../../assets/pictures/circlebg.jpg');
 
@@ -36,14 +35,7 @@ const LandingPageProfile = ({ navigation }) => {
 
   const fetchEventData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/circles', {
+      const response = await axiosInstance.get('/event/feed/circles', {
         headers: {
           Cookie: cookie || '',
         },

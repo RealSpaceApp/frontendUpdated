@@ -7,8 +7,7 @@ import LocationModal from '../../components/events/modals/LocationModal';
 import TimezoneModal from '../../components/events/modals/TimezoneModal';
 import VisibilityModal from '../../components/events/modals/VisibilityModal';
 import PopupMenuIndicator from '../../../assets/events/PopupMenuIndicator';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const CreateEvent = ({ navigation, route }) => {
   const { eventId } = route.params || {};
@@ -93,17 +92,7 @@ const CreateEvent = ({ navigation, route }) => {
     if (eventId) {
       const fetchEventDetails = async () => {
         try {
-          const cookie = await AsyncStorage.getItem('cookie');
-          if (!cookie) {
-            console.warn('No access token found');
-            return;
-          }
-
-          const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${eventId}`, {
-            headers: {
-              Cookie: cookie || '',
-            },
-          });
+          const response = await axiosInstance.get(`/event/${eventId}`);
 
           if (response.status === 202) {
             const event = response.data;
@@ -131,15 +120,6 @@ const CreateEvent = ({ navigation, route }) => {
 
   const handleCreateEvent = async () => {
     try {
-
-
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       let response;
       if (eventId) {
         console.log(eventId)
@@ -153,11 +133,9 @@ const CreateEvent = ({ navigation, route }) => {
           start_time: "2024-08-20T15:00:00Z",
           end_time: "2024-09-20T15:00:00Z",
         };
-
-        response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/event/update`, eventPayload, {
+        response = await axiosInstance.post(`/event/update`, eventPayload, {
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookie || '',
           },
         });
       } else {
@@ -174,10 +152,9 @@ const CreateEvent = ({ navigation, route }) => {
         if (eventType.toLowerCase() === 'circles') {
           eventPayload.select_circle = ['fbd31487-fc5a-458e-81c2-e18f80f010c0'];
         }
-        response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/event/create', eventPayload, {
+        response = await axiosInstance.post('/event/create', eventPayload, {
           headers: {
             'Content-Type': 'application/json',
-            Cookie: cookie || '',
           },
         });
       }
@@ -434,7 +411,6 @@ const CreateEvent = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     paddingBottom: 100,
     backgroundColor: '#F6F6F6',
   },
@@ -485,11 +461,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlignVertical: 'top',
     marginHorizontal: 16,
+    color: '#2d2d2d',
   },
   inputTitle: {
     fontSize: 20,
     padding: 20,
     fontWeight: 'bold',
+    color: '#2d2d2d',
   },
   switchContainer: {
     flexDirection: 'row',
@@ -497,6 +475,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 12,
     paddingHorizontal: 16,
+    color: '#2d2d2d',
   },
   switchText: {
     fontSize: 16,

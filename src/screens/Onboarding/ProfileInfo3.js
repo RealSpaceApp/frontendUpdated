@@ -7,6 +7,7 @@ import NextButton from '../../components/events/NextButton';
 import GoBackButton from '../../components/events/GoBackButton';
 import ProgressBar from '../../components/events/ProgressBar';
 import Clear from '../../../assets/onboarding/Clear';
+import axiosInstance from '../../config/AxiosInstance';
 
 const ProfileInfo3 = ({ navigation }) => {
   const [bio, setBio] = useState('');
@@ -14,20 +15,12 @@ const ProfileInfo3 = ({ navigation }) => {
 
   const handleNext = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const formData = new FormData();
       formData.append('about', bio);
 
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile`, formData, {
+      const response = await axiosInstance.post(`/user/save-profile`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Cookie: cookie || '',
         },
       });
 

@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Switch, Modal } from 'react-n
 import NavBar from '../../components/navbar/NavBar';
 import { SvgXml } from 'react-native-svg';
 import Arrow from '../../../assets/onboarding/Arrow';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const ProfileSettings = ({ navigation }) => {
   const [allDay, setAllDay] = useState(true);
@@ -14,20 +14,8 @@ const ProfileSettings = ({ navigation }) => {
 
   const fetchFriends = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-      const response = await fetch('https://realspace-otq5wtkqba-uc.a.run.app/friends', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: cookie || '',
-        },
-      });
-      const friendsList = await response.json();
+      const response = await axiosInstance.get('/friends');
+      const friendsList = response.data;
       console.log(friendsList);
       setFriends(friendsList);
     } catch (error) {
@@ -53,7 +41,6 @@ const ProfileSettings = ({ navigation }) => {
         setModalVisible(true);
       } else if (message.friendship === 'error') {
         console.error('Failed to initiate friendship');
-
       } else if (message.friendship === 'accept') {
         console.log('Friendship accepted');
         fetchFriends();
@@ -77,14 +64,7 @@ const ProfileSettings = ({ navigation }) => {
 
   const initiateFriendship = async () => {
     try {
-      console.log('doing...')
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
+      console.log('Initiating friendship...');
       if (!ws) {
         console.error('WebSocket connection not established');
         return;
@@ -96,7 +76,7 @@ const ProfileSettings = ({ navigation }) => {
         action: "friendship"
       };
       ws.send(JSON.stringify(msg));
-      console.log('done');
+      console.log('Friendship initiation message sent');
       fetchFriends();
     } catch (error) {
       console.error('Failed to initiate friendship:', error);
@@ -249,11 +229,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 16,
     marginHorizontal: 16,
+    color: '#2d2d2d',
   },
   inputTitle: {
     fontSize: 20,
     padding: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#2d2d2d',
   },
   switchContainer: {
     flexDirection: 'row',
@@ -318,7 +300,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
+    color: '#2d2d2d',
   },
   modalBackground: {
     backgroundColor: '#00000066',

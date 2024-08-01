@@ -9,9 +9,8 @@ import Info from '../../../assets/circles/Info';
 import { SvgXml } from 'react-native-svg';
 import Arrow from '../../../assets/onboarding/Arrow';
 import Location from '../../../assets/events/Location';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import SelectedMember from '../../components/circles/SelectedMember';
+import axiosInstance from '../../config/AxiosInstance';
 
 const ManageMembers = ({ navigation }) => {
   const [selected, setSelected] = useState(false);
@@ -32,18 +31,7 @@ const ManageMembers = ({ navigation }) => {
 
   const fetchEventData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/circles', {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get('/event/feed/circles');
 
       if (response.status === 202) {
         console.log(response.data)

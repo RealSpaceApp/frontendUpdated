@@ -5,14 +5,13 @@ import Clock from '../../../../assets/events/Clock';
 import Location from '../../../../assets/events/Location';
 import ExpandArrow from '../../../../assets/events/ExpandArrow';
 import Tags from './Tags';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import ActionButtonGreen from '../../../components/events/ActionButtonGreen';
 import CloseButton from '../../../../assets/onboarding/CloseButton';
 import TimerAttend from '../../../../assets/events/TimerAttend';
 import TimerNotAttend from '../../../../assets/events/TimerNotAttend';
 import creatorPhoto from '../../../../assets/pictures/eventImage1.jpg'
+import axiosInstance from '../../../config/AxiosInstance';
 
 const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitle, notes, addNotes, time, text, location, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
@@ -50,12 +49,7 @@ const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitl
         setLoadingMessage("Not attending")
       }
       setLoading(true)
-      const cookie = await AsyncStorage.getItem('cookie');
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
+  
       const payload = {
         event_id: eventId,
         type: "public",
@@ -63,10 +57,9 @@ const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitl
         note: note,
         note_time: new Date().toISOString()
       };
-
-      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/event/react', payload, {
+      
+      const response = await axiosInstance.post('/event/react', payload, {
         headers: {
-          Cookie: cookie || '',
           'Content-Type': 'application/json',
         },
       });

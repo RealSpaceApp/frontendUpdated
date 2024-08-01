@@ -34,7 +34,7 @@ const ProfileLook3 = ({ navigation }) => {
         </View>
       </View>
 
-      <ActionButtonGreen content={'Lets go!'} onPress={() => navigation.navigate('LandingPageProfile')} style={styles.buttonNext} />
+      <ActionButtonGreen content={'Lets go!'} onPress={() => navigation.navigate('Name')} style={styles.buttonNext} />
     </View>
   );
 };
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#49A078',
     borderRadius: 12,
     padding: 16,
-
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 40,

@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#2d2d2d',
   },
   button: {
     paddingVertical: 8,

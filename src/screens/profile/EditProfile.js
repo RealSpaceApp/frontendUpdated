@@ -3,11 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, TextInput,
 import NavBar from '../../components/navbar/NavBar';
 import { themes } from './Themes2';
 import { SvgXml } from 'react-native-svg';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'react-native-image-picker';
 import Edit from '../../../assets/profile/Edit';
 import { useFocusEffect } from '@react-navigation/native';
+import axiosInstance from '../../config/AxiosInstance';
 
 const EditProfile = ({ navigation }) => {
   const [userData, setUserData] = useState({
@@ -21,14 +20,7 @@ const EditProfile = ({ navigation }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      const axiosInstance = axios.create({
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
-
-      const response = await axiosInstance.get('https://realspace-otq5wtkqba-uc.a.run.app/user/profile');
+      const response = await axiosInstance.get('/user/profile');
       console.debug('LandingPageProfile Profile Response:', response.data);
 
       setUserData({
@@ -101,14 +93,6 @@ const EditProfile = ({ navigation }) => {
 
   const handleSaveChanges = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      console.log('Cookie:', cookie);
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const formData = new FormData();
       formData.append('name', userData.name);
       formData.append('about', userData.bio);
@@ -125,10 +109,9 @@ const EditProfile = ({ navigation }) => {
         });
       }
 
-      const response = await axios.post('https://realspace-otq5wtkqba-uc.a.run.app/user/save-profile', formData, {
+      const response = await axiosInstance.post('/user/save-profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Cookie: cookie || '',
         },
       });
 
@@ -148,10 +131,6 @@ const EditProfile = ({ navigation }) => {
       }
     }
   };
-
-
-
-
 
   const handleDiscardChanges = () => {
     setUserData(originalData);
@@ -378,6 +357,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     fontSize: 16,
+    color: '#2d2d2d',
   },
   inputBio: {
     paddingHorizontal: 20,
@@ -388,6 +368,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     color: '#646464',
     textAlignVertical: 'top',
+    color: '#2d2d2d',
   },
   editImages: {
     flexDirection: 'row',

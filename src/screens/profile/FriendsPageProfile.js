@@ -8,12 +8,11 @@ import friendsData from '../friends/FriendsList';
 import { LinearGradient } from 'react-native-linear-gradient';
 import CloseButton from '../../../assets/onboarding/CloseButton';
 import { SvgXml } from 'react-native-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import ActionButtonGreen from '../../components/events/ActionButtonGreen';
 import ScheduleCard from '../../components/profile/ScheduleCard';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import axiosInstance from '../../config/AxiosInstance';
 
 const scheduleData = [
   {
@@ -53,13 +52,7 @@ const LandingPageProfile = ({ id }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      const axiosInstance = axios.create({
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
-      const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/${id}`);
+      const response = await axiosInstance.get(`/user/profile/${id}`);
       console.debug('LandingPageProfile Profile Response:', response.data);
 
       setUserData({
@@ -375,6 +368,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     marginLeft: 5,
+    color: '#2d2d2d',
   },
   searchIcon: {
     marginLeft: 10,
@@ -444,7 +438,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
+    color: '#2d2d2d',
   },
   modalView: {
     backgroundColor: '#EEEEEE',

@@ -3,8 +3,7 @@ import { View, StyleSheet, FlatList, Text, TouchableOpacity, Alert } from 'react
 import EventsCard from '../../components/events/cards/EventsCard';
 import { SvgXml } from 'react-native-svg';
 import Notification from '../../../assets/events/Notification';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../config/AxiosInstance';
 
 const FriendsEvents = () => {
   const [publicEvents, setPublicEvents] = useState([]);
@@ -19,19 +18,8 @@ const FriendsEvents = () => {
   const fetchEventReactions = async (events) => {
     if (!events) return;
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
       const updatedEvents = await Promise.all(events.map(async (event) => {
-        const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/event/${event.id}/my-reaction`, {
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
+        const response = await axiosInstance.get(`/event/${event.id}/my-reaction`);
 
         if (response.status === 202) {
           console.log(response.data);
@@ -53,18 +41,7 @@ const FriendsEvents = () => {
 
   const fetchEventData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get('https://realspace-otq5wtkqba-uc.a.run.app/event/feed/friends', {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get('/event/feed/friends');
 
       if (response.status === 202 && response.data) {
         console.log(response.data);
@@ -80,18 +57,7 @@ const FriendsEvents = () => {
 
   const fetchUserProfile = async (userId) => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile/${userId}`, {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get(`/user/profile/${userId}`);
 
       if (response.status === 202) {
         setUserProfiles(prevProfiles => ({
@@ -207,7 +173,8 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 50,
     position: 'absolute',
-    right: 0
+    right: 0,
+    color: '#2d2d2d',
   },
   selectedFilterButton: {
     borderWidth: 1,

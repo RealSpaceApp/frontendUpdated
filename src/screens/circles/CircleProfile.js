@@ -10,10 +10,9 @@ import WhiteArrow from '../../../assets/onboarding/WhiteArrow';
 import Settings from '../../../assets/circles/Settings';
 import Location from '../../../assets/events/Location';
 import EventsCard from '../../components/events/cards/EventsCard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import axiosInstance from '../../config/AxiosInstance';
 
 const LandingPageProfile = () => {
   const route = useRoute();
@@ -35,17 +34,7 @@ const LandingPageProfile = () => {
 
   const fetchCircleData = useCallback(async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-
-      const response = await axios.get(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}`, {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
+      const response = await axiosInstance.get(`/circles/${id}`);
 
       if (response.status === 202) {
         setCircleData(response.data);
@@ -78,18 +67,8 @@ const LandingPageProfile = () => {
 
   const deleteCircle = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-  
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/delete`, {}, {
-        headers: {
-          Cookie: cookie || '',
-        },
-      });
-  
+      const response = await axiosInstance.post(`/circles/${id}/delete`);
+
       if (response.status === 202) {
         Alert.alert('Success', 'Circle deleted successfully.');
         navigation.goBack(); // Go back to the previous screen
@@ -101,21 +80,15 @@ const LandingPageProfile = () => {
       Alert.alert('Error', 'Failed to delete circle. Please try again later.');
     }
   };
-  
+
   const leaveCircle = async () => {
     try {
-      const cookie = await AsyncStorage.getItem('cookie');
-      if (!cookie) {
-        console.warn('No access token found');
-        return;
-      }
-  
-      const response = await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/circles/${id}/leave`, {}, {
+      const response = await axiosInstance.post(`/circles/${id}/leave`, {}, {
         headers: {
           Cookie: cookie || '',
         },
       });
-  
+
       if (response.status === 202) {
         Alert.alert('Success', 'You have left the circle.');
         navigation.goBack(); // Go back to the previous screen
@@ -127,7 +100,7 @@ const LandingPageProfile = () => {
       Alert.alert('Error', 'Failed to leave circle. Please try again later.');
     }
   };
-  
+
   if (!circleData) {
     return (
       <View style={styles.container}>
@@ -144,7 +117,7 @@ const LandingPageProfile = () => {
     <View>
       {circleData.photo === "" ? <Image source={circleData.photo} style={styles.backgroundImage2} /> :
         <Image source={circleData.photo} style={styles.backgroundImage} />}
-        
+
       <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.goBack()}>
         <SvgXml xml={WhiteArrow} style={styles.arrow} />
       </TouchableOpacity>
@@ -188,7 +161,7 @@ const LandingPageProfile = () => {
       </LinearGradient>
     </View>
   );
-  
+
   const renderFooter = () => (
     <View style={styles.footer}>
       {friendsData.length > 6 && (
@@ -207,7 +180,7 @@ const LandingPageProfile = () => {
       </View>
     </View>
   );
-  
+
 
   const renderEventCard = ({ item }) => (
     <EventsCard
@@ -242,7 +215,7 @@ const LandingPageProfile = () => {
       navigation.navigate(item.value);
     }
   };
-  
+
 
   return (
     <View style={styles.container}>
@@ -264,15 +237,15 @@ const LandingPageProfile = () => {
         )}
       />
 
-{showSettingsOptions && (
-  <Dropdown
-    style={styles.dropdown}
-    data={dropdownData}
-    labelField="label"
-    valueField="value"
-    onChange={handleDropdownChange}
-  />
-)}
+      {showSettingsOptions && (
+        <Dropdown
+          style={styles.dropdown}
+          data={dropdownData}
+          labelField="label"
+          valueField="value"
+          onChange={handleDropdownChange}
+        />
+      )}
 
 
       <Modal

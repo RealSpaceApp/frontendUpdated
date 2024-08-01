@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import cover from '../../../assets/pictures/userCover.jpg';
+import axiosInstance from '../../config/AxiosInstance';
 
 const { width } = Dimensions.get('window');
 
@@ -23,13 +22,7 @@ const FriendsV3 = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cookie = await AsyncStorage.getItem('cookie');
-        const axiosInstance = axios.create({
-          headers: {
-            Cookie: cookie || '',
-          },
-        });
-        const response = await axiosInstance.get(`https://realspace-otq5wtkqba-uc.a.run.app/user/profile`);
+        const response = await axiosInstance.get(`/user/profile`);
         console.debug('FriendsV3 Profile Response:', response.data);
 
         setUserData({
