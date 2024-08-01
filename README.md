@@ -7,7 +7,7 @@ This project is the frontend application for the RealSpace social network, curre
 - React native
 
 ## Android deployed:
-- On the "frontendUpdated/downloadFile/android" folder, download the "app-release.apk" file on your phone
+- On the "frontendUpdated/android/app/build/outputs/ap/release" folder, download the "app-release.apk" file on your phone
 - On your phone, click on the file and follow the installing instructions
 - WARNING: For now, to login or create an account asks for the OTP number verification message to Sai
 
