@@ -20,8 +20,10 @@ workflows:
       - name: Install CocoaPods Dependencies
         script: |
           echo "Installing CocoaPods dependencies..."
+          sudo gem install cocoapods --pre
           cd ios
-          pod install --repo-update
+          pod repo update
+          pod install --verbose
 
       - name: Build iOS App
         script: |
