@@ -8,6 +8,7 @@ import { themes } from './Themes2';
 import FriendCardProfilePage from '../../components/profile/FriendCardProfilePage';
 import friendsData from '../friends/FriendsList';
 import { LinearGradient } from 'react-native-linear-gradient';
+import Search from '../../../assets/events/Search';
 import { SvgXml } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
 import SettingsIcon from '../../../assets/profile/SettingsIcon'
@@ -62,26 +63,31 @@ const LandingPageProfile = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [fetchData])
+      fetchFriends();
+    }, [fetchData, fetchFriends])
   );
-
   const theme = themes[userData.theme];
   const [searchTerm, setSearchTerm] = useState('');
   const [modalVisibleMuteCalls, setModalVisibleMuteCalls] = useState(false);
   const [modalVisibleRemoveFriend, setModalVisibleRemoveFriend] = useState(false);
   const [modalVisibleMuteEvents, setModalVisibleMuteEvents] = useState(false);
 
-  const toggleSelectedItem = (id) => {
+  const toggleSelectedItem = useCallback((id) => {
     setSelectedItems(prevState => ({
       ...prevState,
       [id]: !prevState[id],
     }));
-  };
+  }, []);
+
 
   const handleFriendProfile = () => {
     const id = '2ca14736-12a1-4ac1-8fba-bd639be71b1a';
     navigation.navigate('FriendsPageProfile', { id });
   };
+
+  const filteredFriendsData = friendsData.filter(friend =>
+    friend.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const renderHeader = () => (
     <View>
@@ -137,10 +143,11 @@ const LandingPageProfile = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.searchBar}>
-          <AntDesign name="search1" size={20} color="#000" style={styles.searchIcon} />
+          <SvgXml xml={Search} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search"
+            placeholderTextColor="#3C3C434D"
             onChangeText={setSearchTerm}
             value={searchTerm}
           />
@@ -156,13 +163,13 @@ const LandingPageProfile = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      { }
+
       <FlatList
-        data={friendsData}
+        data={filteredFriendsData}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={renderHeader}
         ListFooterComponent={renderFooter}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <FriendCardProfilePage
             photo={item.photo}
             name={item.name}
@@ -193,8 +200,8 @@ const LandingPageProfile = ({ navigation }) => {
         }}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Remove friend?</Text>
-            <Text style={styles.modalText}>Once removed you’ll have to meet them again to add them as a friend.</Text>
+            <Text style={styles.modalTitle}>Mute calls?</Text>
+            <Text style={styles.modalText}>You will no longer see their calls.</Text>
             <TouchableOpacity
 
               onPress={() => setModalVisibleMuteCalls(!modalVisibleMuteCalls)}>
@@ -474,7 +481,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   bottom: {
-    height: 80,
+    height: 100,
     width: '100%',
   },
   centeredView: {

@@ -5,6 +5,7 @@ import { themes } from '../profile/Themes2';
 import FriendCardProfilePage from '../../components/profile/FriendCardProfilePage';
 import friendsData from '../friends/FriendsList';
 import { LinearGradient } from 'react-native-linear-gradient';
+import Search from '../../../assets/events/Search';
 import { SvgXml } from 'react-native-svg';
 import WhiteArrow from '../../../assets/onboarding/WhiteArrow';
 import Settings from '../../../assets/circles/Settings';
@@ -113,6 +114,11 @@ const LandingPageProfile = () => {
     setShowSettingsOptions(false);
   };
 
+  const handleEventTypeChange2 = () => {
+    setShowSettingsOptions(!showSettingsOptions)
+    setDropdownVisible(!isDropdownVisible)
+  };
+
   const renderHeader = () => (
     <View>
       {circleData.photo === "" ? <Image source={circleData.photo} style={styles.backgroundImage2} /> :
@@ -170,9 +176,11 @@ const LandingPageProfile = () => {
         </TouchableOpacity>
       )}
       <View style={styles.secondList}>
+      {circleData.length > 0 && (
         <Text style={styles.title2}>Events</Text>
+      )}
         <FlatList
-          data={circleData.events} // Assuming circleData has an events property
+          data={circleData.events}
           keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
           renderItem={renderEventCard}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -180,7 +188,6 @@ const LandingPageProfile = () => {
       </View>
     </View>
   );
-
 
   const renderEventCard = ({ item }) => (
     <EventsCard
@@ -199,9 +206,9 @@ const LandingPageProfile = () => {
   );
 
   const dropdownData = [
-    { label: 'Manage members', value: 'ManageMembers' },
-    { label: 'Circle settings', value: 'CircleSettings' },
-    { label: 'Edit circle', value: 'CreateCircle' },
+    { label: 'Manage members', value: 'ManageMembers', textStyle: styles.optionText },
+    { label: 'Circle settings', value: 'CircleSettings', textStyle: styles.optionText },
+    { label: 'Edit circle', value: 'CreateCircle', textStyle: styles.optionText },
     { label: 'Leave circle', value: 'CreateEvent', textStyle: styles.optionTextRed }
   ];
 
@@ -214,6 +221,30 @@ const LandingPageProfile = () => {
     else {
       navigation.navigate(item.value);
     }
+  };
+
+  const CustomDropdown = ({ data, onChange }) => {
+    return (
+      <View style={styles.dropdown}>
+        
+        {showSettingsOptions && (
+          <View style={styles.dropdownMenu}>
+            {data.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  onChange(item);
+                  setShowSettingsOptions(false);
+                }}
+                style={styles.dropdownMenuItem}
+              >
+                <Text style={[styles.optionText, item.textStyle]}>{item.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+      </View>
+    );
   };
 
 
@@ -237,15 +268,17 @@ const LandingPageProfile = () => {
         )}
       />
 
-      {showSettingsOptions && (
+      {/* {showSettingsOptions && (
         <Dropdown
           style={styles.dropdown}
           data={dropdownData}
           labelField="label"
           valueField="value"
           onChange={handleDropdownChange}
+          textStyle={styles.optionText}
+          containerStyle={styles.dropdownContainer}
         />
-      )}
+      )} */}
 
 
       <Modal
@@ -262,12 +295,16 @@ const LandingPageProfile = () => {
                 <Text style={styles.closeModalText}>Done</Text>
               </TouchableOpacity>
             </View>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Search"
-              onChangeText={setSearchTerm}
-              value={searchTerm}
-            />
+            <View style={styles.searchBar}>
+        <SvgXml xml={Search} />
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Search"
+            onChangeText={setSearchTerm}
+            placeholderTextColor="#3C3C434D"
+            value={searchTerm}
+          />
+          </View>
             <FlatList
               data={filteredMembers}
               keyExtractor={(item) => item.id.toString()}
@@ -288,6 +325,14 @@ const LandingPageProfile = () => {
         </View>
       </Modal>
       <NavBar profilePage={true} />
+      {showSettingsOptions && (
+        <View style={styles.settingsOptions}>
+          <CustomDropdown
+            data={dropdownData}
+            onChange={handleDropdownChange}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -388,6 +433,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginHorizontal: 20,
     marginVertical: 15,
+    color: 'black'
   },
   mainPhotoLabel: {
     color: 'white',
@@ -471,9 +517,9 @@ const styles = StyleSheet.create({
     color: '#007AFF',
   },
   settingsButton: {
-    position: 'absolute',
-    top: 30,
-    left: 16,
+    // position: 'relative',
+    // top: 30,
+    // left: 16,
     zIndex: 2,
     transform: [{ rotate: '180deg' }]
   },
@@ -494,6 +540,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 5,
     elevation: 6,
+    color: 'black',
   },
   optionText: {
     fontSize: 17,
@@ -502,6 +549,40 @@ const styles = StyleSheet.create({
   optionTextRed: {
     fontSize: 17,
     color: '#FF453A',
+  },
+  settingsOptions: {
+    backgroundColor: 'red',
+    position: 'absolute',
+    top: '48%',
+    left: '50%',width: '40%',
+  },
+  dropdown: {
+    backgroundColor: 'white',
+    // position: 'absolute',
+    // top: '48%',
+    // left: '50%',
+  },
+  dropdownButton: {
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#D9D9D9',
+  },
+  dropdownButtonText: {
+    fontSize: 16,
+    color: '#000000',
+    textAlign: 'center',
+  },
+  dropdownMenu: {
+    marginTop: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#D9D9D9',
+  },
+  dropdownMenuItem: {
+    padding: 10,
   },
 });
 

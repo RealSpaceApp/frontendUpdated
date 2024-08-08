@@ -88,7 +88,8 @@ const Hosting = () => {
     <EventsCard
       attending={item.attending}
       creator={true}
-      notes={[{ note: 'Yes ! im up for the meeting, I’ll be 15 min late but i’ll meet you guys this evening for sure !', note_time: '2024-07-10T14:54:17.486Z' }, { note: 'Just order a latte for me !', note_time: '2024-07-10T14:54:17.486Z' }]}
+      //notes={[{ note: 'Yes ! im up for the meeting, I’ll be 15 min late but i’ll meet you guys this evening for sure !', note_time: '2024-07-10T14:54:17.486Z' }, { note: 'Just order a latte for me !', note_time: '2024-07-10T14:54:17.486Z' }]}
+      notes={item.notes}
       eventId={item.id}
       addNotes={item.allow_notes}
       eventTitle={item.title}

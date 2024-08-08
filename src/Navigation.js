@@ -51,7 +51,6 @@ const MainNavigator = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* Onboarding */}
         
-        <Stack.Screen name="RealRelationships" component={RealRelationships} options={{ showNavBar: false }} />
         <Stack.Screen name="Onboarding01" component={Onboarding01} options={{ showNavBar: false }} />
         <Stack.Screen name="Onboarding05" component={Onboarding05} options={{ showNavBar: false }} />
         <Stack.Screen name="Onboarding06" component={Onboarding06} options={{ showNavBar: false }} />
@@ -74,6 +73,7 @@ const MainNavigator = () => {
         <Stack.Screen name="LandingPageCommunity" component={LandingPageCommunity} options={{ showNavBar: true }} />
         <Stack.Screen name="LandingPageFriends" component={LandingPageFriends} options={{ showNavBar: true }} />
          <Stack.Screen name="LandingPageProfile" component={LandingPageProfile} options={{ showNavBar: true }} />
+        <Stack.Screen name="RealRelationships" component={RealRelationships} options={{ showNavBar: false }} />
         <Stack.Screen name="LandingPageSchedule" component={LandingPageSchedule} options={{ showNavBar: true }} />
         <Stack.Screen name="LandingPageCircles" component={LandingPageCircles} options={{ showNavBar: true }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ showNavBar: true }} />

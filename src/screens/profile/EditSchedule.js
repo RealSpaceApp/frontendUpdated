@@ -291,6 +291,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: '#B9B9B9',
     fontSize: 17,
+    color: 'black'
   },
   deleteText: {
     color: 'red',
@@ -303,6 +304,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 17,
+    color: 'black'
   },
   centeredView: {
     flex: 1,

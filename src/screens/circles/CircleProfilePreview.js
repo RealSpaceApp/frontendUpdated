@@ -6,20 +6,32 @@ import friendsData from '../friends/FriendsList';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { SvgXml } from 'react-native-svg';
 import WhiteArrow from '../../../assets/onboarding/WhiteArrow';
-import Settings from '../../../assets/circles/Settings';
 import Location from '../../../assets/events/Location';
 import axiosInstance from '../../config/AxiosInstance';
 
 const photo = require('../../../assets/pictures/circlebg.jpg');
 
 const CircleProfilePreview = ({ navigation }) => {
-  const [userData] = useState({
-    name: 'Groove Gurus',
-    bio: 'A crew of music junkies vibing to the latest hits and hidden gems. We live for the beats and the bass drops!',
-    photo: '../../../assets/pictures/photo2.png',
-    theme: 'Blue03',
-    location: 'Florida, USA'
-  });
+  const { 
+    title, 
+    description, 
+    selectedImageURI, 
+    location, 
+    gradient, 
+    tags 
+  } = route.params;
+
+  const theme = {
+    backgroundColor: gradient,
+    backgroundColor2: gradient // Assuming the same color for simplicity
+  };
+  // const [userData] = useState({
+  //   name: 'Groove Gurus',
+  //   bio: 'A crew of music junkies vibing to the latest hits and hidden gems. We live for the beats and the bass drops!',
+  //   photo: '../../../assets/pictures/photo2.png',
+  //   theme: 'Blue03',
+  //   location: 'Florida, USA'
+  // });
   const [eventData, setEventData] = useState([]);
 
   const fetchEventData = useCallback(async () => {
@@ -42,25 +54,21 @@ const CircleProfilePreview = ({ navigation }) => {
     fetchEventData();
   }, [fetchEventData]);
 
-  const theme = themes[userData.theme];
-  const tags = ["Book_club", "Fantasy", "Society"];
+  // const theme = themes[userData.theme];
+  // const tags = ["Book_club", "Fantasy", "Society"];
 
   return (
     <View style={styles.container}>
-      <Image source={photo} style={styles.backgroundImage} />
+      <Image source={{ uri: selectedImageURI }} style={styles.backgroundImage} />
       <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.goBack()}>
         <SvgXml xml={WhiteArrow} style={styles.arrow} />
       </TouchableOpacity>
       <View style={styles.profilePhoto}>
-        <Image source={friendsData[4].photo} style={styles.photo} />
+        <Image source={{ uri: selectedImageURI }} style={styles.photo} />
         <View>
           <Text style={styles.adminText}>Admin</Text>
-          <Text style={styles.mainPhotoLabel}>{friendsData[4].name}</Text>
+          <Text style={styles.mainPhotoLabel}>{title}</Text>
         </View>
-        <TouchableOpacity style={styles.settings}>
-          <SvgXml xml={Settings} />
-        </TouchableOpacity>
-
       </View>
       <LinearGradient
         colors={[theme.backgroundColor, theme.backgroundColor2]}
@@ -69,8 +77,8 @@ const CircleProfilePreview = ({ navigation }) => {
         style={styles.profileContainer}
       >
         <View style={styles.userProfile}>
-          <Text style={styles.title}>{userData.name}</Text>
-          <Text style={styles.textBio}>{userData.bio}</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.textBio}>{description}</Text>
           <View style={styles.tagsContainer}>
             {tags.map((tag, index) => (
               <TouchableOpacity key={index} style={styles.tag}>
@@ -78,14 +86,13 @@ const CircleProfilePreview = ({ navigation }) => {
               </TouchableOpacity>
             ))}
           </View>
-          {userData.location && (
+          {location && (
             <View style={styles.timeContent}>
               <SvgXml xml={Location} />
-              <Text style={styles.textBio}>{userData.location}</Text>
+              <Text style={styles.textBio}>{location}</Text>
             </View>
           )}
         </View>
-
         <NavBar profilePage={true} />
       </LinearGradient>
     </View>
@@ -184,6 +191,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 16,
     marginHorizontal: 16

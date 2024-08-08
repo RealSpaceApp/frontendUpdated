@@ -74,8 +74,8 @@ const PublicEvents = () => {
       <EventsCard
         attending={item.reaction || 'attend'}
         creator={false}
-        name={userProfile.name || 'Creator name'}
-        photo={userProfile.avatar ? { uri: userProfile.avatar } : require('../../../assets/pictures/photo7.png')}
+        name={userProfile.name}
+        photo={{ uri: userProfile.avatar }}
         eventId={item.id}
         addNotes={item.allow_notes}
         eventTitle={item.title}

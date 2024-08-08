@@ -46,7 +46,7 @@ const Onboarding06 = () => {
           console.warn('Set-Cookie header not found in response');
         }
 
-        navigation.navigate('ProfileInfo15');
+        navigation.navigate('LandingPageProfile');
       } catch (error) {
         console.error('Error signing in with Google:', error);
       }

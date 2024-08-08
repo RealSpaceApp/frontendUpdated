@@ -26,6 +26,7 @@ const LandingPageFriends = () => {
       
         <TextInput
           style={styles.searchBar}
+          placeholderTextColor="#3C3C434D"
           placeholder="Search"
           onChangeText={setSearchTerm}
           value={searchTerm}

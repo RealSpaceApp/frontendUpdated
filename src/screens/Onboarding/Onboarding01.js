@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 48,
     fontWeight: 'bold',
-    fontFamily: 'Roboto_400Regular'
+    fontFamily: 'Roboto_400Regular',
+    color: 'black'
   },
 });

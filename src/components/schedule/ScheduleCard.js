@@ -4,14 +4,12 @@ import { SvgXml } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import Clock from '../../../assets/events/Clock';
 
-const ScheduleCard = ({ important, name, eventTitle, time, text, location, photo }) => {
+const ScheduleCard = ({ important, name, attending,eventId, addNotes, onDelete, creator, eventTitle, time, text, location, photo }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
-    navigation.navigate('EventDetails', { name, eventTitle, time, text, location, photo, creator });
+    navigation.navigate('EventDetails', { name,attending, eventId, addNotes, onDelete, eventTitle, time, text, location, photo, creator });
   };
-
-  const creator = true;
   
   return (
     <TouchableOpacity style={[important ? styles.importantContainer : styles.container]} onPress={handleCardPress}>

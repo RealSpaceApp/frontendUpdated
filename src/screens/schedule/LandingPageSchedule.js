@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, createElement } from 'react';
 import { View, StyleSheet, Text, FlatList, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import NavBar from '../../components/navbar/NavBar';
@@ -11,6 +11,8 @@ const LandingPageSchedule = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [events, setEvents] = useState([]);
+  const [userProfiles, setUserProfiles] = useState({});
+  const [currentUser, setCurrentUser] = useState('');
 
   useEffect(() => {
     fetchUpcomingEvents();
@@ -22,6 +24,7 @@ const LandingPageSchedule = () => {
       const data = response.data;
       console.log('schedule', data);
       setEvents(data);
+      await fetchEventReactions(response.data);
     } catch (error) {
       console.error('Erro ao buscar eventos:', error);
     }
@@ -33,11 +36,91 @@ const LandingPageSchedule = () => {
       const data = response.data;
       console.log('FilteredEvents', data);
       setFilteredEvents(data);
+
+      // Fetch user profiles for all events
+      data.forEach(event => fetchUserProfile(event.subscriber_id));
+      
     } catch (error) {
       console.error('Erro ao buscar eventos para a data:', error);
       setFilteredEvents([]);
     }
   };
+
+  const fetchEventReactions = async (events) => {
+    try {
+      const updatedEvents = await Promise.all(events.map(async (event) => {
+        const response = await axiosInstance.get(`/event/${event.id}/my-reaction`);
+
+        if (response.status === 202) {
+          console.log(response.data);
+          return { ...event, reaction: response.data.reaction, notes: response.data.note };
+        } else {
+          console.warn(`Failed to fetch reaction for event ${event.id}`);
+          return event;
+        }
+      }));
+
+      setPublicEvents(updatedEvents);
+      // Fetch user profiles for all events
+      updatedEvents.forEach(event => fetchUserProfile(event.subscriber_id));
+    } catch (error) {
+      console.error('Error fetching event reactions:', error);
+      Alert.alert('Error', 'Failed to fetch event reactions. Please try again later.');
+    }
+  };
+
+  const fetchUserProfile = async (userId) => {
+    try {
+      const response = await axiosInstance.get(`/user/profile/${userId}`);
+
+      if (response.status === 202) {
+        setUserProfiles(prevProfiles => ({
+          ...prevProfiles,
+          [userId]: response.data,
+        }));
+      } else {
+        console.warn(`Failed to fetch profile for user ${userId}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching profile for user ${userId}:`, error);
+      Alert.alert('Error', 'Failed to fetch user profile. Please try again later.');
+    }
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+
+      const response = await axiosInstance.post('/event/delete', {
+        ID: eventId,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.status === 202) {
+        setEventData(eventData.filter(event => event.id !== eventId));
+      } else {
+        console.warn('Failed to delete event');
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      Alert.alert('Error', 'Failed to delete event. Please try again later.');
+    }
+  };
+
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(`/user/profile/`);
+      setCurrentUser(response.data.id);
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData()
+  }, []);
 
   useEffect(() => {
     if (selectedDate) {
@@ -111,9 +194,12 @@ const LandingPageSchedule = () => {
   );
 
   const mapEvent = (event) => {
+    const userProfile = userProfiles[event.subscriber_id] || {};
     return {
       id: event.event_id,
-      name: event.title,
+      name: userProfile.name || '',
+      photo: { uri: userProfile.avatar },
+      creator: event.subscriber_id==currentUser? true : false,
       addNotes: event.allow_notes,
       important: false,
       eventTitle: event.title,
@@ -145,16 +231,21 @@ const LandingPageSchedule = () => {
               name={item.name}
               addNotes={item.addNotes}
               important={item.important}
+              eventId={item.id}
               eventTitle={item.eventTitle}
+              attending={item.reaction || 'attend'}
+              creator={item.creator}
               time={item.time}
               location={item.location}
               text={item.text}
+              photo={item.photo}
               style={styles.eventCard}
+              onDelete={() => handleDeleteEvent(item.id)}
             />
           )}
         />
       ) : (
-        <View style={styles.emptyContainer}>
+        <View style={styles.errorMessage}>
           <Text>No events for selected date</Text>
         </View>
       )}

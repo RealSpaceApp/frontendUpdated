@@ -1,0 +1,29 @@
+workflows:
+  ios:
+    name: iOS Build
+    max_build_duration: 60
+    environment:
+      vars:
+        CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
+        PROVISIONING_PROFILE: $PROVISIONING_PROFILE
+        CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
+      scripts:
+        - name: Prepare iOS Certificate and Provisioning Profile
+          script: |
+            echo "Preparing iOS certificate..."
+            echo $CERTIFICATE_PRIVATE_KEY_FILE | base64 --decode > ~/cert.p12
+            echo $PROVISIONING_PROFILE | base64 --decode > ~/profile.mobileprovision
+
+        - name: Build iOS App
+          script: |
+            echo "Building iOS app..."
+            xcodebuild -workspace YourWorkspace.xcworkspace -scheme YourScheme -configuration Release archive -archivePath ~/build/YourApp.xcarchive
+            xcodebuild -exportArchive -archivePath ~/build/YourApp.xcarchive -exportPath ~/build -exportOptionsPlist YourExportOptions.plist
+
+    artifacts:
+      - build/*.ipa
+
+    cache:
+      directories:
+        - $HOME/Library/Caches/org.carthage.CarthageKit
+        - $HOME/Library/Developer/Xcode/DerivedData

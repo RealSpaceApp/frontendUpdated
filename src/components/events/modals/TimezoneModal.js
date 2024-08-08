@@ -28,7 +28,7 @@ const TimezoneModal = ({ visible, onClose }) => {
             <View style={styles.searchBar}>
               <SvgXml xml={Search} />
               <TextInput
-
+              placeholderTextColor="#3C3C434D"
                 placeholder="Search"
               />
             </View>

@@ -144,6 +144,7 @@ const LandingPageProfile = ({ id }) => {
           <TextInput
             style={styles.searchInput}
             placeholder="Search"
+            placeholderTextColor="#3C3C434D"
             onChangeText={setSearchTerm}
             value={searchTerm}
           />

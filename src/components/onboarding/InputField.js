@@ -19,6 +19,7 @@ const InputField = ({ value, placeholder }) => {
       placeholder={placeholder}
       onChangeText={handleInputChange}
       value={value}
+      placeholderTextColor="#3C3C434D"
     />
     <SubmitButton text={"Submit"} onPress={handleSubmit}/>
     </View>

@@ -112,7 +112,7 @@ const ProfileSettings = ({ navigation }) => {
       </TouchableOpacity>
 
       <View style={styles.header2}>
-        <View style={styles.switchContainer}>
+        <View style={styles.eventTypeContainer}>
           <View style={styles.selectionButton}>
             <Text style={styles.eventTypeText}>Notifications</Text>
           </View>

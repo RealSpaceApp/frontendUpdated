@@ -94,7 +94,7 @@ const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitl
   return (
     <View style={[styles.container, expanded && styles.expandedContainer]}>
       <View>
-        <View style={styles.header}>
+        {photo && name && <View style={styles.header}>
           {photo && <Image source={photo} style={styles.photo} />}
           {name && <Text style={styles.name}>{name}</Text>}
           <View style={styles.loadingContainer}>
@@ -104,7 +104,7 @@ const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitl
             {loading == true && loadingMessage == 'Not attending' && <SvgXml xml={TimerNotAttend} />}
           </View>
 
-        </View>
+        </View>}
         {eventTitle && <Text style={styles.title}>{eventTitle}</Text>}
         {time && (
           <View style={styles.timeContainer}>
@@ -190,6 +190,7 @@ const EventsCard = ({ eventId, attending, creator, photo, name, image, eventTitl
                     style={styles.input}
                     placeholder="reason for cancellation of event"
                     multiline
+                    placeholderTextColor="#3C3C434D"
                     numberOfLines={10}
                     value={description}
                     onChangeText={text => setDescription(text)}
@@ -336,6 +337,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
+    color: 'black'
   },
   timeContainer: {
     flexDirection: 'row',

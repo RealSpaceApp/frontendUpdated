@@ -47,7 +47,7 @@ const CreateCircle = ({ navigation, route }) => {
     if (id) {
       const fetchEventDetails = async () => {
         try {
-          
+
           const response = await axiosInstance.get(`/circles/${id}`);
 
           if (response.status === 202) {
@@ -163,6 +163,7 @@ const CreateCircle = ({ navigation, route }) => {
           </TouchableOpacity>
           <TextInput
             style={styles.inputTitle}
+            placeholderTextColor="#3C3C434D"
             placeholder="Circle Name"
             value={title}
             onChangeText={(text) => setTitle(text)}
@@ -172,6 +173,7 @@ const CreateCircle = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           placeholder="Enter Description"
+          placeholderTextColor="#3C3C434D"
           multiline
           numberOfLines={6}
           value={description}
@@ -213,7 +215,17 @@ const CreateCircle = ({ navigation, route }) => {
         <TimezoneModal visible={timezoneModalVisible} onClose={closeTimezoneModal} />
       </View>
 
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CircleProfilePreview')}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('CircleProfilePreview', {
+          title,
+          description,
+          selectedImageURI,
+          location,
+          gradient,
+          tags
+        })}
+      >
         <Text style={styles.textAdd}>Preview profile</Text>
       </TouchableOpacity>
 

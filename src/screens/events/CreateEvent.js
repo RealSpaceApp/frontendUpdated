@@ -33,6 +33,8 @@ const CreateEvent = ({ navigation, route }) => {
   const [showEventTypeOptions, setShowEventTypeOptions] = useState(false);
   const [showEventLengthOptions, setShowEventLengthOptions] = useState(false);
   const [showRepetitionOptions, setShowRepetitionOptions] = useState(false);
+  const [startDate, setStartDate] = useState({ month: '', day: '', year: '', time: '' });
+  const [endDate, setEndDate] = useState({ month: '', day: '', year: '', time: '' });
 
   const [modifiedFields, setModifiedFields] = useState({
     endTime: false,
@@ -105,6 +107,24 @@ const CreateEvent = ({ navigation, route }) => {
             event.timeZone && setTimeZone(event.timeZone);
             event.repetition && setRepetition(event.repetition);
             event.allowNotes && setAllowNotes(event.allowNotes);
+            if (event.start_time) {
+              const startDateTime = new Date(event.start_time);
+              setStartDate({
+                month: String(startDateTime.getUTCMonth() + 1).padStart(2, '0'),
+                day: String(startDateTime.getUTCDate()).padStart(2, '0'),
+                year: String(startDateTime.getUTCFullYear()),
+                time: startDateTime.toISOString().substring(11, 16),
+              });
+            }
+            if (event.end_time) {
+              const endDateTime = new Date(event.end_time);
+              setEndDate({
+                month: String(endDateTime.getUTCMonth() + 1).padStart(2, '0'),
+                day: String(endDateTime.getUTCDate()).padStart(2, '0'),
+                year: String(endDateTime.getUTCFullYear()),
+                time: endDateTime.toISOString().substring(11, 16),
+              });
+            }
           } else {
             console.warn('Failed to fetch event details');
           }
@@ -120,6 +140,13 @@ const CreateEvent = ({ navigation, route }) => {
 
   const handleCreateEvent = async () => {
     try {
+      const formatDateTime = ({ month, day, year, time }) => {
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${time}:00Z`;
+      };
+
+      const start_time = formatDateTime(startDate);
+      const end_time = formatDateTime(endDate);
+
       let response;
       if (eventId) {
         console.log(eventId)
@@ -130,8 +157,8 @@ const CreateEvent = ({ navigation, route }) => {
           type: eventType.toLowerCase(),
           length_of_event: eventLength.toLowerCase(),
           repitition: repetition.toLowerCase(),
-          start_time: "2024-08-20T15:00:00Z",
-          end_time: "2024-09-20T15:00:00Z",
+          start_time: start_time,
+          end_time: end_time,
         };
         response = await axiosInstance.post(`/event/update`, eventPayload, {
           headers: {
@@ -145,8 +172,8 @@ const CreateEvent = ({ navigation, route }) => {
           type: eventType.toLowerCase(),
           length_of_event: eventLength.toLowerCase(),
           repitition: repetition.toLowerCase(),
-          start_time: "2024-08-20T15:00:00Z",
-          end_time: "2024-09-20T15:00:00Z",
+          start_time: start_time,
+          end_time: end_time,
         };
 
         if (eventType.toLowerCase() === 'circles') {
@@ -219,12 +246,14 @@ const CreateEvent = ({ navigation, route }) => {
 
             <TextInput
               style={styles.inputTitle}
+              placeholderTextColor="#3C3C434D"
               placeholder="Add title"
               value={title}
               onChangeText={(text) => setTitle(text)}
             />
             <TextInput
               style={styles.input}
+              placeholderTextColor="#3C3C434D"
               placeholder="Enter description"
               multiline
               numberOfLines={6}
@@ -296,21 +325,102 @@ const CreateEvent = ({ navigation, route }) => {
               </View>
             )}
 
-            {/* START */}
+            {/* Date and Time Inputs */}
             <View style={styles.eventTypeContainer}>
-              <View style={styles.selectionButton}>
-                <Text style={styles.eventTypeText}>Monday, 1 Apr 2024</Text>
+              <Text style={styles.eventTypeText}>Start Date and Time</Text>
+              <View style={styles.timeContainer}>
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="MM"
+                  placeholderTextColor="#3C3C434D"
+                  keyboardType="numeric"
+                  maxLength={2}
+                  value={startDate.month}
+                  onChangeText={(text) => setStartDate({ ...startDate, month: text })}
+                />
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="DD"
+                  placeholderTextColor="#3C3C434D"
+                  keyboardType="numeric"
+                  maxLength={2}
+                  value={startDate.day}
+                  onChangeText={(text) => setStartDate({ ...startDate, day: text })}
+                />
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="YYYY"
+                  placeholderTextColor="#3C3C434D"
+                  keyboardType="numeric"
+                  maxLength={4}
+                  value={startDate.year}
+                  onChangeText={(text) => setStartDate({ ...startDate, year: text })}
+                />
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="HH:MM"
+                  placeholderTextColor="#3C3C434D"
+                  value={startDate.time}
+                  onChangeText={(text) => setStartDate({ ...startDate, time: text })}
+                />
               </View>
-              <Text style={styles.modalOptionText}>5:00 PM</Text>
             </View>
 
-            {/* END */}
             <View style={styles.eventTypeContainer}>
+              <Text style={styles.eventTypeText}>End Date and Time</Text>
+              <View style={styles.timeContainer}>
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="MM"
+                  placeholderTextColor="#3C3C434D"
+                  keyboardType="numeric"
+                  maxLength={2}
+                  value={endDate.month}
+                  onChangeText={(text) => setEndDate({ ...endDate, month: text })}
+                />
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="DD"
+                  placeholderTextColor="#3C3C434D"
+                  keyboardType="numeric"
+                  maxLength={2}
+                  value={endDate.day}
+                  onChangeText={(text) => setEndDate({ ...endDate, day: text })}
+                />
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="YYYY"
+                  placeholderTextColor="#3C3C434D"
+                  keyboardType="numeric"
+                  maxLength={4}
+                  value={endDate.year}
+                  onChangeText={(text) => setEndDate({ ...endDate, year: text })}
+                />
+                <TextInput
+                  style={styles.timeInput}
+                  placeholder="HH:MM"
+                  placeholderTextColor="#3C3C434D"
+                  value={endDate.time}
+                  onChangeText={(text) => setEndDate({ ...endDate, time: text })}
+                />
+              </View>
+            </View>
+
+            {/* START */}
+            {/* <View style={styles.eventTypeContainer}>
               <View style={styles.selectionButton}>
                 <Text style={styles.eventTypeText}>Monday, 1 Apr 2024</Text>
               </View>
               <Text style={styles.modalOptionText}>5:00 PM</Text>
-            </View>
+            </View> */}
+
+            {/* END */}
+            {/* <View style={styles.eventTypeContainer}>
+              <View style={styles.selectionButton}>
+                <Text style={styles.eventTypeText}>Monday, 1 Apr 2024</Text>
+              </View>
+              <Text style={styles.modalOptionText}>5:00 PM</Text>
+            </View> */}
 
             {/* Repetition */}
             <View style={styles.eventTypeContainer}>
@@ -492,6 +602,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.25,
     padding: 16,
   },
+  timeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   lastEventTypeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -585,6 +700,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#2D2D2D',
   },
+  timeInput: {
+    fontSize: 15,
+    color: 'black',
+  }
 });
 
 export default CreateEvent;

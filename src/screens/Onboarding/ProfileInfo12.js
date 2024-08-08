@@ -108,6 +108,7 @@ const ProfileInfo12 = ({ navigation }) => {
                 style={styles.input}
                 value={birthdate}
                 onChangeText={handleBirthdateChange}
+                placeholderTextColor="#3C3C434D"
                 placeholder="DD/MM/YYYY"
                 keyboardType="numeric"
                 maxLength={10}

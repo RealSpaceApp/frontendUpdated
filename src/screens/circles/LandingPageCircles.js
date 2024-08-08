@@ -58,7 +58,7 @@ const LandingPageCircles = ({ navigation }) => {
         </View>
         <FlatList
           data={circles}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
           renderItem={({ item }) => (
             <CirclesCard
               id={item.id}

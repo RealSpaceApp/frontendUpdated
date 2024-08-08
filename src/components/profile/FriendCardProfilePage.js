@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 21.48,
     fontWeight: '500',
+    color: 'black'
   },
   online: {
     width: 22,

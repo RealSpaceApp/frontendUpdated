@@ -23,7 +23,7 @@ const ProfileInfo17 = ({ navigation }) => {
   const handleVerifyPhoneNumber = async () => {
     try {
       const formattedOtp = otp.join('');
-      await axios.post(`https://realspace-otq5wtkqba-uc.a.run.app/auth/phone/verify`, {
+      await axios.post(`http://172.21.192.1:8080/auth/phone/verify`, {
         phone: phoneNumber,
         otp: Number(formattedOtp),
       });
@@ -74,6 +74,7 @@ const ProfileInfo17 = ({ navigation }) => {
                 <TextInput
                   key={index}
                   ref={textInputs[index]}
+                  placeholderTextColor="#3C3C434D"
                   style={styles.codeInput}
                   keyboardType="numeric"
                   maxLength={1}

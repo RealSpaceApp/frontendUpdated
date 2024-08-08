@@ -214,6 +214,7 @@ const LandingPageProfile = ({ navigation }) => {
               placeholder="Search"
               onChangeText={setSearchTerm}
               value={searchTerm}
+              placeholderTextColor="#3C3C434D"
             />
             <FlatList
               data={filteredMembers}

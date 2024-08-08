@@ -28,7 +28,8 @@ const CirclesCard = ({ photo, name, eventTitle, id, tags }) => {
             <SvgXml xml={CoverPhoto} style={styles.coverPhoto} />
           )}
           <View style={styles.textContainer}>
-            {name && <Text style={styles.name}>{eventTitle}</Text>}
+            {name ? <Text style={styles.name}>{eventTitle}</Text> :
+            <Text style={styles.name}>undefined</Text>}
             <View style={styles.tagsContainer}>
               {Array.isArray(tags) && tags.map((tag, index) => (
                 <TouchableOpacity

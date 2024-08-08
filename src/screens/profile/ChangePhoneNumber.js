@@ -127,6 +127,7 @@ const ChangePhoneNumber = ({ navigation }) => {
             {Array.from({ length: 6 }, (_, index) => (
               <TextInput
                 key={index}
+                placeholderTextColor="#3C3C434D"
                 ref={textInputs[index]}
                 style={styles.codeInput}
                 keyboardType="numeric"
@@ -173,6 +174,7 @@ const ChangePhoneNumber = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <TextInput
+          placeholderTextColor="#3C3C434D"
             style={styles.largeInput}
             placeholder="Enter phone number"
             keyboardType="numeric"

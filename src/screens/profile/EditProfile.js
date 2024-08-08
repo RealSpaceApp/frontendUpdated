@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, TextInput, Alert, Platform, PermissionsAndroid } from 'react-native';
 import NavBar from '../../components/navbar/NavBar';
 import { themes } from './Themes2';
 import { SvgXml } from 'react-native-svg';
@@ -64,31 +64,82 @@ const EditProfile = ({ navigation }) => {
     }));
   };
 
+  const checkAndRequestPermissions = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const hasCameraPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
+        const hasReadPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+        const hasWritePermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+  
+        if (hasCameraPermission && hasReadPermission && hasWritePermission) {
+          return true;
+        }
+  
+        const granted = await PermissionsAndroid.requestMultiple(
+          [
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+          ],
+          {
+            title: 'Access Permissions',
+            message: 'The app needs access to your gallery and camera.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+  
+        console.log('Permissions granted:', granted);
+  
+        const allGranted = granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+                           granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+                           granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED;
+  
+        if (!allGranted) {
+          Alert.alert('Permissions Denied', 'Unable to access the gallery or camera.');
+        }
+  
+        return allGranted;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    }
+    return true;
+  };  
+
   const handleImageSelection = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
-      return;
-    }
+    const hasPermission = await checkAndRequestPermissions();
+    if (!hasPermission) return;
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
+    ImagePicker.launchImageLibrary(
+      {
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      },
+      (response) => {
+        console.log('Image Picker Result:', response);
 
-    console.log('Image Picker Result:', result);
-
-    if (!result.canceled) {
-      const selectedUri = result.assets[0].uri;
-      console.log('Image URI:', selectedUri);
-      setSelectedImageURI(selectedUri);
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        photo: selectedUri,
-      }));
-    }
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          const selectedUri = response.assets[0].uri;
+          console.log('Image URI:', selectedUri);
+          setSelectedImageURI(selectedUri);
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            photo: selectedUri,
+          }));
+        }
+      }
+    );
   };
 
   const handleSaveChanges = async () => {
@@ -146,10 +197,10 @@ const EditProfile = ({ navigation }) => {
         <View style={styles.header}>
           <View style={styles.row}>
             <TouchableOpacity onPress={handleDiscardChanges} style={styles.buttonContainer}>
-              <Text>Discard</Text>
+              <Text style={styles.text}>Discard</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleSaveChanges} style={styles.buttonContainer}>
-              <Text>Save changes</Text>
+              <Text style={styles.text}>Save changes</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={handleImageSelection} style={styles.editButtonContainer}>
@@ -188,7 +239,7 @@ const EditProfile = ({ navigation }) => {
             textAlignVertical="top"
           />
           <View style={styles.editImages}>
-            <Text>Birthday</Text>
+            <Text style={styles.text}>Birthday</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter your Birthday"
@@ -380,6 +431,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   inputTitle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  text: {
     fontSize: 16,
     color: 'black',
   },

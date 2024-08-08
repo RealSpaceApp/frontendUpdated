@@ -47,12 +47,14 @@ const NewCommunity = ({ navigation }) => {
         {/* Inputs */}
         <TextInput
           style={styles.inputTitle}
+          placeholderTextColor="#3C3C434D"
           placeholder="Enter Community name"
           value={title}
           onChangeText={text => setTitle(text)}
         />
         <TextInput
           style={styles.input}
+          placeholderTextColor="#3C3C434D"
           placeholder="Enter Description"
           multiline
           numberOfLines={6}
@@ -62,6 +64,7 @@ const NewCommunity = ({ navigation }) => {
         <Text style={styles.eventTypeText}>Email</Text>
         <TextInput
           style={styles.input}
+          placeholderTextColor="#3C3C434D"
           placeholder="Enter email"
           value={email}
           onChangeText={text => setEmail(text)}

@@ -186,6 +186,7 @@ const ManageMembers = () => {
           </View><TextInput
             style={styles.searchBar}
             placeholder="Search"
+            placeholderTextColor="#3C3C434D"
             onChangeText={setSearchTerm}
             value={searchTerm}
           />
@@ -308,6 +309,7 @@ const ManageMembers = () => {
             <TextInput
               style={styles.searchBar}
               placeholder="Search"
+              placeholderTextColor="#3C3C434D"
               onChangeText={setSearchTerm}
               value={searchTerm}
             />
