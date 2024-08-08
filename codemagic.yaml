@@ -13,15 +13,15 @@ workflows:
         script: |
           echo "Preparing iOS certificate..."
           mkdir -p ~/build
-          printf "%s" "$CERTIFICATE_PRIVATE_KEY_FILE" | base64 --decode > ~/build/cert.p12
-          printf "%s" "$PROVISIONING_PROFILE" | base64 --decode > ~/build/profile.mobileprovision
+          echo $CERTIFICATE_PRIVATE_KEY_FILE | base64 --decode > ~/build/cert.p12
+          echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
       - name: Build iOS App
         script: |
           echo "Building iOS app..."
-          xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive
-          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist
+          xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
+          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
 
     artifacts:
       - build/*.ipa
