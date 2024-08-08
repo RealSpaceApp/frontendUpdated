@@ -38,7 +38,7 @@ const CommunityTags = ({ navigation }) => {
         <ActionButtonGreen
           content={'Next'}
           disabled={selectedTags.length === 0}
-          onPress={() => navigation.navigate('AvailabilityFeature')}
+          onPress={() => navigation.navigate('LastOnboarding')}
         />
       </View>
     </View>

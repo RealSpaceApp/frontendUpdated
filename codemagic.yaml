@@ -12,13 +12,14 @@ workflows:
       - name: Prepare iOS Certificate and Provisioning Profile
         script: |
           echo "Preparing iOS certificate..."
-          echo $CERTIFICATE_PRIVATE_KEY_FILE | base64 --decode > ~/cert.p12
-          echo $PROVISIONING_PROFILE | base64 --decode > ~/profile.mobileprovision
+          mkdir -p ~/build
+          printf "%s" "$CERTIFICATE_PRIVATE_KEY_FILE" | base64 --decode > ~/build/cert.p12
+          printf "%s" "$PROVISIONING_PROFILE" | base64 --decode > ~/build/profile.mobileprovision
+          ls -l ~/build
 
       - name: Build iOS App
         script: |
           echo "Building iOS app..."
-          # Usando o arquivo .xcodeproj porque não temos um .xcworkspace
           xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive
           xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist
 

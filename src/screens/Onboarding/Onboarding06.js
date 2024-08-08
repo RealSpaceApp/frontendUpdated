@@ -46,7 +46,16 @@ const Onboarding06 = () => {
           console.warn('Set-Cookie header not found in response');
         }
 
-        navigation.navigate('LandingPageProfile');
+        const createdAt = await AsyncStorage.getItem('created_at');
+      if (createdAt) {
+        const accountAgeInHours = calculateAccountAgeInHours(createdAt);
+
+        if (accountAgeInHours > 1) {
+          navigation.navigate('LandingPageProfile');
+        } else {
+          navigation.navigate('ProfileLook3');
+        }
+      }
       } catch (error) {
         console.error('Error signing in with Google:', error);
       }
