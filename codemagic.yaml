@@ -17,25 +17,10 @@ workflows:
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
-      - name: Clean CocoaPods Cache
-        script: |
-          pod cache clean --all
-          pod deintegrate
-          rm -rf Pods
-          rm -rf Podfile.lock
-
-      - name: Install CocoaPods Dependencies
-        script: |
-          echo "Installing CocoaPods dependencies..."
-          sudo gem install cocoapods --pre
-          cd ios
-          pod repo update --silent
-          pod install --verbose
-
       - name: Build iOS App
         script: |
-          echo "Building iOS app..."
-          xcodebuild -workspace ios/realspace3.xcworkspace -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
+          echo "Building iOS app with SPM..."
+          xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
           xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
 
     artifacts:
