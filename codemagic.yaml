@@ -17,21 +17,16 @@ workflows:
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
-      - name: Install CocoaPods and Dependencies
+      - name: Build iOS App
         script: |
-          echo "Installing CocoaPods..."
-          sudo gem install cocoapods -n /usr/local/bin
-          pod install --project-directory=ios
-          pod update --project-directory=ios
-          ls -l ios/Pods
-
-      - name: Clean and Build iOS App
-        script: |
-          echo "Cleaning and building iOS app..."
-          xcodebuild clean -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release
+          echo "Building iOS app..."
           xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
+          if [ ! -d ~/build/realspace3.xcarchive ]; then
+            echo "Archive not found!"
+            exit 1
+          fi
           xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
           ls -l ~/build  # Verifica se o arquivo IPA foi gerado
 
     artifacts:
-      - ~/build/*.ipa  # Certifica-se de que o caminho do artefato está correto
+      - ~/build/*.ipa  # Certifique-se de que o caminho do artefato está correto
