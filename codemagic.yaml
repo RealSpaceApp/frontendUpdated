@@ -17,6 +17,11 @@ workflows:
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
+      - name: Install Node.js Dependencies
+        script: |
+          echo "Installing NPM dependencies..."
+          npm install
+
       - name: Install CocoaPods
         script: |
           echo "Installing CocoaPods..."
