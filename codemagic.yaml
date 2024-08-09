@@ -15,25 +15,13 @@ workflows:
           mkdir -p ~/build
           echo $CERTIFICATE_PRIVATE_KEY_FILE | base64 --decode > ~/build/cert.p12
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
-
-      - name: Install CocoaPods Dependencies
-        script: |
-          echo "Installing CocoaPods dependencies..."
-          sudo gem install cocoapods --pre
-          cd ios
-          pod repo update
-          pod install --verbose
+          ls -l ~/build
 
       - name: Build iOS App
         script: |
-          echo "Building iOS app..."
-          xcodebuild -workspace ios/realspace3.xcworkspace -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
-          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build/output -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
-
-      - name: Verify IPA Creation
-        script: |
-          echo "Verifying IPA file..."
-          ls -l ~/build/output
+          echo "Building iOS app with SPM..."
+          xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
+          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
 
     artifacts:
-      - ~/build/output/*.ipa
+      - build/*.ipa
