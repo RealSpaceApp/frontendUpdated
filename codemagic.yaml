@@ -22,6 +22,7 @@ workflows:
           echo "Building iOS app with SPM..."
           xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
           xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
+          ls -l ~/build  # Verifica se o arquivo IPA foi gerado
 
     artifacts:
-      - build/*.ipa
+      - ~/build/*.ipa  # Certifica-se de que o caminho do artefato está correto
