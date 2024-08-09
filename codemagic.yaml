@@ -17,6 +17,14 @@ workflows:
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
+      - name: Install CocoaPods
+        script: |
+          echo "Installing CocoaPods..."
+          gem install cocoapods
+          cd ios
+          pod install --repo-update
+          cd ..
+
       - name: Build iOS App
         script: |
           echo "Building iOS app..."
