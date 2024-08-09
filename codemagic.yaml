@@ -28,12 +28,12 @@ workflows:
         script: |
           echo "Building iOS app..."
           xcodebuild -workspace ios/realspace3.xcworkspace -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
-          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
+          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build/output -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
 
       - name: Verify IPA Creation
         script: |
           echo "Verifying IPA file..."
-          ls -l ~/build
+          ls -l ~/build/output
 
     artifacts:
-      - ~/build/*.ipa
+      - ~/build/output/*.ipa
