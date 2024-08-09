@@ -22,22 +22,16 @@ workflows:
           echo "Installing NPM dependencies..."
           npm install
 
-      - name: Install CocoaPods
-        script: |
-          echo "Installing CocoaPods..."
-          gem install cocoapods
-          cd ios
-          pod install --repo-update
-
       - name: Build iOS App
         script: |
           echo "Building iOS app..."
-          xcodebuild -workspace ios/realspace3.xcworkspace -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
+          cd ios
+          xcodebuild -workspace realspace3.xcworkspace -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
           if [ ! -d ~/build/realspace3.xcarchive ]; then
             echo "Archive not found!"
             exit 1
           fi
-          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
+          xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ExportOptions.plist | tee build.log | xcpretty
           ls -l ~/build  # Verifica se o arquivo IPA foi gerado
 
     artifacts:
