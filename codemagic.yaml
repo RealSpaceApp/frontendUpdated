@@ -17,12 +17,19 @@ workflows:
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
+      - name: Clean CocoaPods Cache
+        script: |
+          pod cache clean --all
+          pod deintegrate
+          rm -rf Pods
+          rm -rf Podfile.lock
+
       - name: Install CocoaPods Dependencies
         script: |
           echo "Installing CocoaPods dependencies..."
           sudo gem install cocoapods --pre
           cd ios
-          pod repo update
+          pod repo update --silent
           pod install --verbose
 
       - name: Build iOS App
