@@ -17,9 +17,18 @@ workflows:
           echo $PROVISIONING_PROFILE | base64 --decode > ~/build/profile.mobileprovision
           ls -l ~/build
 
-      - name: Build iOS App
+      - name: Install CocoaPods and Dependencies
         script: |
-          echo "Building iOS app with SPM..."
+          echo "Installing CocoaPods..."
+          sudo gem install cocoapods
+          pod install --project-directory=ios
+          pod update --project-directory=ios
+          ls -l ios/Pods
+
+      - name: Clean and Build iOS App
+        script: |
+          echo "Cleaning and building iOS app..."
+          xcodebuild clean -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release
           xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
           xcodebuild -exportArchive -archivePath ~/build/realspace3.xcarchive -exportPath ~/build -exportOptionsPlist ios/ExportOptions.plist | tee build.log | xcpretty
           ls -l ~/build  # Verifica se o arquivo IPA foi gerado
