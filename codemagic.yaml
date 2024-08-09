@@ -22,10 +22,7 @@ workflows:
           echo "Installing CocoaPods..."
           gem install cocoapods
           cd ios
-          pod deintegrate
-          pod clean
           pod install --repo-update
-          cd ..
 
       - name: Build iOS App
         script: |
@@ -39,4 +36,4 @@ workflows:
           ls -l ~/build  # Verifica se o arquivo IPA foi gerado
 
     artifacts:
-      - ~/build/*.ipa  # Certifique-se de que o caminho do artefato está correto
+      - ~/build/*.ipa
