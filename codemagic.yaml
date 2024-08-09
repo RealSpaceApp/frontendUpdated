@@ -20,7 +20,7 @@ workflows:
       - name: Install CocoaPods and Dependencies
         script: |
           echo "Installing CocoaPods..."
-          sudo gem install cocoapods
+          sudo gem install cocoapods -n /usr/local/bin
           pod install --project-directory=ios
           pod update --project-directory=ios
           ls -l ios/Pods
