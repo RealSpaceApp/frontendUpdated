@@ -22,13 +22,15 @@ workflows:
           echo "Installing CocoaPods..."
           gem install cocoapods
           cd ios
+          pod deintegrate
+          pod clean
           pod install --repo-update
           cd ..
 
       - name: Build iOS App
         script: |
           echo "Building iOS app..."
-          xcodebuild -project ios/realspace3.xcodeproj -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
+          xcodebuild -workspace ios/realspace3.xcworkspace -scheme realspace3 -configuration Release archive -archivePath ~/build/realspace3.xcarchive | tee build.log | xcpretty
           if [ ! -d ~/build/realspace3.xcarchive ]; then
             echo "Archive not found!"
             exit 1
