@@ -5,7 +5,7 @@ workflows:
     environment:
       vars:
         CERTIFICATE_PRIVATE_KEY_FILE: $signing.CERTIFICATE_PRIVATE_KEY_FILE
-        PROVISIONING_PROFILE_BASE64: $signing.PROVISIONING_PROFILE # Variável Base64
+        PROVISIONING_PROFILE: $signing.PROVISIONING_PROFILE # Variável Base64
         CERTIFICATE_PRIVATE_KEY_PASSWORD: $signing.CERTIFICATE_PRIVATE_KEY_PASSWORD
         DEVELOPMENT_TEAM: 375WVRSY2Q # Substitua pelo seu ID de equipe
         CODE_SIGN_STYLE: "Manual"
@@ -35,7 +35,7 @@ workflows:
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       - name: Decode Provisioning Profile
         script: |
-          echo "$PROVISIONING_PROFILE_BASE64" | base64 --decode > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
+          echo "$PROVISIONING_PROFILE" | base64 --decode > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
       - name: Build iOS app
         script: |
           xcodebuild -workspace ios/realspace3.xcworkspace \
