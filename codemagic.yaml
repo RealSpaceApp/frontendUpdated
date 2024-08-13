@@ -5,7 +5,7 @@ workflows:
     environment:
       vars:
         CERTIFICATE_PRIVATE_KEY_FILE: $signing.CERTIFICATE_PRIVATE_KEY_FILE
-        PROVISIONING_PROFILE_BASE64: $signing.PROVISIONING_PROFILE # Variável Base64
+        PROVISIONING_PROFILE: $signing.PROVISIONING_PROFILE # Variável Base64
         CERTIFICATE_PRIVATE_KEY_PASSWORD: $signing.CERTIFICATE_PRIVATE_KEY_PASSWORD
         DEVELOPMENT_TEAM: 375WVRSY2Q
         CODE_SIGN_STYLE: "Manual"
@@ -33,34 +33,14 @@ workflows:
         script: cd ios && pod install && cd ..
       - name: Bundle React Native assets
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
-            - name: Save Base64 Content
+      - name: Save Base64 Content
         script: |
-          # Verifica se a variável PROVISIONING_PROFILE_BASE64 está definida e não vazia
-          if [ -z "$PROVISIONING_PROFILE_BASE64" ]; then
-            echo "Error: PROVISIONING_PROFILE_BASE64 is not set or is empty."
+          if [ -z "$PROVISIONING_PROFILE" ]; then
+            echo "Error: PROVISIONING_PROFILE is not set."
             exit 1
           fi
-          
-          # Salva o conteúdo da variável em um arquivo
-          echo "$PROVISIONING_PROFILE_BASE64" > $CM_BUILD_DIR/ios/provisioning_profile_base64.txt
-          
-          # Verifica se o arquivo foi criado e não está vazio
-          if [ ! -s "$CM_BUILD_DIR/ios/provisioning_profile_base64.txt" ]; then
-            echo "Error: provisioning_profile_base64.txt is not created or is empty."
-            exit 1
-          fi
-
-          # Decodifica o arquivo base64 para .mobileprovision
-          if ! base64 --decode $CM_BUILD_DIR/ios/provisioning_profile_base64.txt > $CM_BUILD_DIR/ios/YourProfile.mobileprovision; then
-            echo "Error: Failed to decode base64 content."
-            exit 1
-          fi
-          
-          # Verifica se o arquivo .mobileprovision foi criado e não está vazio
-          if [ ! -s "$CM_BUILD_DIR/ios/YourProfile.mobileprovision" ]; then
-            echo "Error: YourProfile.mobileprovision is not created or is empty."
-            exit 1
-          fi
+          echo "$PROVISIONING_PROFILE" > $CM_BUILD_DIR/ios/provisioning_profile.txt
+          base64 --decode $CM_BUILD_DIR/ios/provisioning_profile.txt > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
       - name: Verify Provisioning Profile
         script: |
           if [ ! -f "$CM_BUILD_DIR/ios/YourProfile.mobileprovision" ]; then
