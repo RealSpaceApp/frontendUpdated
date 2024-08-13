@@ -4,14 +4,13 @@ workflows:
     max_build_duration: 100
     environment:
       vars:
-        CERTIFICATE_PRIVATE_KEY_FILE: $signing.CERTIFICATE_PRIVATE_KEY_FILE
-        PROVISIONING_PROFILE: $signing.PROVISIONING_PROFILE
-        CERTIFICATE_PRIVATE_KEY_PASSWORD: $signing.CERTIFICATE_PRIVATE_KEY_PASSWORD
+        CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
+        PROVISIONING_PROFILE: $PROVISIONING_PROFILE
+        CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
       xcode: latest
-      cocoapods: 1.9.1
       node: 18.0.0
       npm: 9.0.0
-      ruby: 2.7.2
+      ruby: 3.0.4
     cache:
       cache_paths:
         - $HOME/Library/Caches/CocoaPods
@@ -24,6 +23,8 @@ workflows:
     scripts:
       - name: Install Dependencies
         script: npm install
+      - name: Install CocoaPods
+        script: gem install cocoapods
       - name: Install Pods
         script: cd ios && pod install && cd ..
       - name: Bundle React Native assets
