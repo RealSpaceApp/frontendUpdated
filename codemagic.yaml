@@ -33,9 +33,10 @@ workflows:
         script: cd ios && pod install && cd ..
       - name: Bundle React Native assets
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
-      - name: Decode Provisioning Profile
+      - name: Save Base64 Content
         script: |
-          echo "$PROVISIONING_PROFILE_BASE64" | base64 -d > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
+          echo "$PROVISIONING_PROFILE_BASE64" > $CM_BUILD_DIR/ios/provisioning_profile_base64.txt
+          base64 -d $CM_BUILD_DIR/ios/provisioning_profile_base64.txt > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
       - name: Build iOS app
         script: |
           xcodebuild -workspace ios/realspace3.xcworkspace \
