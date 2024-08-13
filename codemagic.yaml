@@ -35,7 +35,7 @@ workflows:
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       - name: Decode Provisioning Profile
         script: |
-          echo "$PROVISIONING_PROFILE" | base64 --decode > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
+          echo "$PROVISIONING_PROFILE_BASE64" | base64 -d > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
       - name: Build iOS app
         script: |
           xcodebuild -workspace ios/realspace3.xcworkspace \
