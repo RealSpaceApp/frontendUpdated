@@ -7,9 +7,10 @@ workflows:
         CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
         PROVISIONING_PROFILE: $PROVISIONING_PROFILE
         CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
-      xcode: latest
-      node: 18.0.0
-      npm: 9.0.0
+      xcode: 15.4
+      cocoapods: default
+      node: 18.16.0 # Ajuste para uma versão estável do Node.js disponível
+      npm: default
       ruby: 3.0.4
     cache:
       cache_paths:
