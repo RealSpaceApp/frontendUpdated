@@ -5,9 +5,9 @@ workflows:
     environment:
       vars:
         CERTIFICATE_PRIVATE_KEY_FILE: $signing.CERTIFICATE_PRIVATE_KEY_FILE
-        PROVISIONING_PROFILE: $signing.PROVISIONING_PROFILE # Variável Base64
+        PROVISIONING_PROFILE_BASE64: $signing.PROVISIONING_PROFILE # Variável Base64
         CERTIFICATE_PRIVATE_KEY_PASSWORD: $signing.CERTIFICATE_PRIVATE_KEY_PASSWORD
-        DEVELOPMENT_TEAM: 375WVRSY2Q # Substitua pelo seu ID de equipe
+        DEVELOPMENT_TEAM: 375WVRSY2Q
         CODE_SIGN_STYLE: "Manual"
         CODE_SIGN_IDENTITY: "Apple Development"
       xcode: 15.4
@@ -35,8 +35,18 @@ workflows:
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       - name: Save Base64 Content
         script: |
+          if [ -z "$PROVISIONING_PROFILE_BASE64" ]; then
+            echo "Error: PROVISIONING_PROFILE_BASE64 is not set."
+            exit 1
+          fi
           echo "$PROVISIONING_PROFILE_BASE64" > $CM_BUILD_DIR/ios/provisioning_profile_base64.txt
-          base64 -d $CM_BUILD_DIR/ios/provisioning_profile_base64.txt > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
+          base64 --decode $CM_BUILD_DIR/ios/provisioning_profile_base64.txt > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
+      - name: Verify Provisioning Profile
+        script: |
+          if [ ! -f "$CM_BUILD_DIR/ios/YourProfile.mobileprovision" ]; then
+            echo "Error: Provisioning profile not found."
+            exit 1
+          fi
       - name: Build iOS app
         script: |
           xcodebuild -workspace ios/realspace3.xcworkspace \
