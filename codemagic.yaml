@@ -7,9 +7,12 @@ workflows:
         CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
         PROVISIONING_PROFILE: $PROVISIONING_PROFILE
         CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
+        DEVELOPMENT_TEAM: 375WVRSY2Q # Substitua pelo seu ID de equipe
+        CODE_SIGN_STYLE: "Manual" # ou "Automatic" dependendo de sua configuração
+        CODE_SIGN_IDENTITY: "Apple Development" # ou outro dependendo de sua configuração
       xcode: 15.4
       cocoapods: default
-      node: 18.16.0 # Ajuste para uma versão estável do Node.js disponível
+      node: 18.16.0
       npm: 9.8.1
       ruby: 3.0.4
     cache:
@@ -31,7 +34,17 @@ workflows:
       - name: Bundle React Native assets
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       - name: Build iOS app
-        script: xcodebuild -workspace ios/realspace3.xcworkspace -scheme realspace3 -configuration Release -sdk iphoneos clean build
+        script: |
+          xcodebuild -workspace ios/realspace3.xcworkspace \
+          -scheme realspace3 \
+          -configuration Release \
+          -sdk iphoneos \
+          -archivePath $CM_BUILD_DIR/ios/realspace3.xcarchive \
+          clean archive \
+          CODE_SIGN_STYLE="$CODE_SIGN_STYLE" \
+          CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" \
+          DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
+          PROVISIONING_PROFILE="$PROVISIONING_PROFILE"
     artifacts:
       - ios/build/Build/Products/Release-iphoneos/*.ipa
     publishing:
