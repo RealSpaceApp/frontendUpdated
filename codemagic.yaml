@@ -4,12 +4,12 @@ workflows:
     max_build_duration: 100
     environment:
       vars:
-        CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
-        PROVISIONING_PROFILE: $PROVISIONING_PROFILE
-        CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
+        CERTIFICATE_PRIVATE_KEY_FILE: $signing.CERTIFICATE_PRIVATE_KEY_FILE
+        PROVISIONING_PROFILE_BASE64: $signing.PROVISIONING_PROFILE_BASE64 # Variável Base64
+        CERTIFICATE_PRIVATE_KEY_PASSWORD: $signing.CERTIFICATE_PRIVATE_KEY_PASSWORD
         DEVELOPMENT_TEAM: 375WVRSY2Q # Substitua pelo seu ID de equipe
-        CODE_SIGN_STYLE: "Manual" # ou "Automatic" dependendo de sua configuração
-        CODE_SIGN_IDENTITY: "Apple Development" # ou outro dependendo de sua configuração
+        CODE_SIGN_STYLE: "Manual"
+        CODE_SIGN_IDENTITY: "Apple Development"
       xcode: 15.4
       cocoapods: default
       node: 18.16.0
@@ -33,6 +33,9 @@ workflows:
         script: cd ios && pod install && cd ..
       - name: Bundle React Native assets
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+      - name: Decode Provisioning Profile
+        script: |
+          echo "$PROVISIONING_PROFILE_BASE64" | base64 --decode > $CM_BUILD_DIR/ios/YourProfile.mobileprovision
       - name: Build iOS app
         script: |
           xcodebuild -workspace ios/realspace3.xcworkspace \
@@ -44,7 +47,7 @@ workflows:
           CODE_SIGN_STYLE="$CODE_SIGN_STYLE" \
           CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" \
           DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
-          PROVISIONING_PROFILE="$PROVISIONING_PROFILE"
+          PROVISIONING_PROFILE="$CM_BUILD_DIR/ios/YourProfile.mobileprovision"
     artifacts:
       - ios/build/Build/Products/Release-iphoneos/*.ipa
     publishing:
