@@ -3,12 +3,10 @@ workflows:
     name: iOS Build
     max_build_duration: 100
     environment:
-      group:
-        - signing
       vars:
-        CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
-        PROVISIONING_PROFILE: $PROVISIONING_PROFILE
-        CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
+        CERTIFICATE_PRIVATE_KEY_FILE: $signing.CERTIFICATE_PRIVATE_KEY_FILE
+        PROVISIONING_PROFILE: $signing.PROVISIONING_PROFILE
+        CERTIFICATE_PRIVATE_KEY_PASSWORD: $signing.CERTIFICATE_PRIVATE_KEY_PASSWORD
       xcode: latest
       cocoapods: 1.9.1
       node: 18.0.0
@@ -18,11 +16,11 @@ workflows:
       cache_paths:
         - $HOME/Library/Caches/CocoaPods
         - $CM_BUILD_DIR/node_modules
-      triggering:
-        events:
-          - push
-          - pull_request
-          - tag
+    triggering:
+      events:
+        - push
+        - pull_request
+        - tag
     scripts:
       - name: Install Dependencies
         script: npm install
