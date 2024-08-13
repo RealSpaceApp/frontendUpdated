@@ -33,6 +33,13 @@ workflows:
         script: cd ios && pod install && cd ..
       - name: Bundle React Native assets
         script: npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+      - name: Debug Environment Variables
+        script: |
+          echo "Checking environment variables:"
+          echo "CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE"
+          echo "PROVISIONING_PROFILE: $PROVISIONING_PROFILE"
+          echo "CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD"
+          echo "DEVELOPMENT_TEAM: $DEVELOPMENT_TEAM"
       - name: Save Base64 Content
         script: |
           if [ -z "$PROVISIONING_PROFILE" ]; then
