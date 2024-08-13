@@ -8,11 +8,10 @@ workflows:
         PROVISIONING_PROFILE: $PROVISIONING_PROFILE
         CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
       xcode: 15.4
-      cocoapods: 1.9.1
-      node: 12.4.0
-      npm: 6.13.7
-      ndk: r21d
-      ruby: 2.7.2
+      cocoapods: default
+      node: 18.16.0 # Ajuste para uma versão estável do Node.js disponível
+      npm: 9.8.1
+      ruby: 3.0.4
     cache:
       cache_paths:
         - $HOME/Library/Caches/CocoaPods
