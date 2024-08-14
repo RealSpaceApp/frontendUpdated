@@ -7,9 +7,9 @@ workflows:
         - signing
       vars:
         CERTIFICATE_PRIVATE_KEY_FILE: $CERTIFICATE_PRIVATE_KEY_FILE
-        CERTIFICATE_PRIVATE_KEY_PASSWORD: $CERTIFICATE_PRIVATE_KEY_PASSWORD
+        CERTIFICATE_PRIVATE_KEY_PASSWORD: realspaceapp
         DEVELOPMENT_TEAM: 375WVRSY2Q
-        CODE_SIGN_STYLE: "Manual"
+        CODE_SIGN_STYLE: "Automatic"
         CODE_SIGN_IDENTITY: "Apple Development"
       xcode: 15.4
       cocoapods: default
