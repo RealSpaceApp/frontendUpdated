@@ -42,10 +42,10 @@ workflows:
           echo "$provisioning_profile_base64" | base64 -d > ~/ios/ProvisioningProfile.mobileprovision
       - name: Build and Archive
         script: |
-          xcodebuild -workspace ios/YourProject.xcworkspace -scheme YourScheme -sdk iphoneos -configuration AppStoreDistribution archive -archivePath $CM_BUILD_DIR/YourApp.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Development" PROVISIONING_PROFILE_SPECIFIER="YourProfileName"
+          xcodebuild -workspace ios/realspace3.xcworkspace -scheme YourScheme -sdk iphoneos -configuration AppStoreDistribution archive -archivePath $CM_BUILD_DIR/realspace3.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Development" PROVISIONING_PROFILE_SPECIFIER="realspace3"
       - name: Export IPA
         script: |
-          xcodebuild -exportArchive -archivePath $CM_BUILD_DIR/YourApp.xcarchive -exportPath $CM_BUILD_DIR/ipa -exportOptionsPlist ios/exportOptions.plist
+          xcodebuild -exportArchive -archivePath $CM_BUILD_DIR/realspace3.xcarchive -exportPath $CM_BUILD_DIR/ipa -exportOptionsPlist ios/exportOptions.plist
     artifacts:
       - $CM_BUILD_DIR/ipa/*.ipa
-      - $CM_BUILD_DIR/YourApp.xcarchive
+      - $CM_BUILD_DIR/realspace3.xcarchive
