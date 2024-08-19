@@ -40,22 +40,22 @@ const Onboarding06 = () => {
           if (refreshToken) {
             await AsyncStorage.setItem('refresh_token', refreshToken);
           } else {
-            console.warn('Refresh token not found in Set-Cookie header');
+            console.warn('Refresh todken not found in Set-Cookie header');
           }
         } else {
           console.warn('Set-Cookie header not found in response');
         }
+        navigation.navigate('LandingPageProfile');
+      //   const createdAt = await AsyncStorage.getItem('created_at');
+      // if (createdAt) {
+      //   const accountAgeInHours = calculateAccountAgeInHours(createdAt);
 
-        const createdAt = await AsyncStorage.getItem('created_at');
-      if (createdAt) {
-        const accountAgeInHours = calculateAccountAgeInHours(createdAt);
-
-        if (accountAgeInHours > 1) {
-          navigation.navigate('LandingPageProfile');
-        } else {
-          navigation.navigate('ProfileLook3');
-        }
-      }
+      //   if (accountAgeInHours > 1) {
+      //     navigation.navigate('LandingPageProfile');
+      //   } else {
+      //     navigation.navigate('ProfileLook3');
+      //   }
+      // }
       } catch (error) {
         console.error('Error signing in with Google:', error);
       }

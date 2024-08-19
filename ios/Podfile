@@ -1,29 +1,17 @@
-# Podfile
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
-
-platform :ios, '12.0'  # Defina a versão mínima para 12.0
-prepare_react_native_project!
-
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
+platform :ios, '12.0'
 
 target 'realspace3' do
-  config = use_native_modules!
-  pod 'Firebase/Core', :modular_headers => true
-  pod 'Firebase/Auth', :modular_headers => true
-  pod 'GoogleUtilities', :modular_headers => true
-  pod 'FirebaseCoreInternal', :modular_headers => true
-  use_react_native!(
-    :path => config[:reactNativePath],
+  # Inclui as dependências do React Native
+  config = use_react_native!(
+    :path => '../node_modules/react-native',
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+  # Defina as dependências aqui
+  pod 'Firebase/Core', '~> 10.0'  # Ajuste a versão conforme necessário
+  pod 'Firebase/Auth', '~> 10.0'  # Ajuste a versão conforme necessário
+  pod 'GoogleUtilities', '~> 8.0'  # Ajuste a versão conforme necessário
+  pod 'FirebaseCoreInternal', '~> 10.0'  # Ajuste a versão conforme necessário
 
   target 'realspace3Tests' do
     inherit! :complete
@@ -33,7 +21,6 @@ target 'realspace3' do
   post_install do |installer|
     react_native_post_install(
       installer,
-      config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
   end

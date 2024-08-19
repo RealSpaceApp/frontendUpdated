@@ -1,4 +1,4 @@
-package com.realspace3
+package com.realspaceapp.id
 
 import android.app.Application
 import com.facebook.react.PackageList

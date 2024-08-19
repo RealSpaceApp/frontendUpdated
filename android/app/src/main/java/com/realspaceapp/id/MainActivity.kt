@@ -1,4 +1,4 @@
-package com.realspace3
+package com.realspaceapp.id
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

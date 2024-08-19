@@ -1,4 +1,19 @@
 {
-  "name": "realspace3",
-  "displayName": "realspace3"
+  "expo": {
+    "name": "realspace3",
+    "slug": "realspace3",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "ios": {
+      "bundleIdentifier": "com.realspaceapp.id"
+    },
+    "android": {
+      "package": "com.realspaceapp.id"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "90a8e020-0624-426b-a413-e5fb03f24986"
+      }
+    }
+  }
 }
