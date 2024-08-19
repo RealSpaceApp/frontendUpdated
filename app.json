@@ -10,6 +10,7 @@
     "android": {
       "package": "com.realspaceapp.id"
     },
+    "owner": "realspaceapp",
     "extra": {
       "eas": {
         "projectId": "90a8e020-0624-426b-a413-e5fb03f24986"

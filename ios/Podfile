@@ -5,11 +5,12 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '12.0'# Define a minimum iOS version to 12.0
  
 linkage = ENV['USE_FRAMEWORKS']
-if linkage != nilPod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! :linkage => linkage.to_sym
 end
  
-target 'realspace3'do
+target 'realspace3' do
   config = use_native_modules!
  
   pod 'Firebase/Core', :modular_headers => true
@@ -22,10 +23,12 @@ target 'realspace3'do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 end
- 
-target 'realspace3Tests'do
-  inherit! :complete# Pods for testingend
- 
+
+target 'realspace3Tests' do
+  inherit! :complete
+  # Pods for testing
+end
+
 post_install do |installer|
   react_native_post_install(installer)
 end
