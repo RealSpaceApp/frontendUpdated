@@ -1,17 +1,14 @@
 platform :ios, '12.0'
 
 target 'realspace3' do
-  # Inclui as dependências do React Native
-  config = use_react_native!(
-    :path => '../node_modules/react-native',
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
+  require_relative '../node_modules/react-native/scripts/react_native_pods'
+  config = use_native_modules!
 
-  # Defina as dependências aqui
-  pod 'Firebase/Core', '~> 10.0'  # Ajuste a versão conforme necessário
-  pod 'Firebase/Auth', '~> 10.0'  # Ajuste a versão conforme necessário
-  pod 'GoogleUtilities', '~> 8.0'  # Ajuste a versão conforme necessário
-  pod 'FirebaseCoreInternal', '~> 10.0'  # Ajuste a versão conforme necessário
+  # Define dependencies here
+  pod 'Firebase/Core', '~> 10.0'
+  pod 'Firebase/Auth', '~> 10.0'
+  pod 'GoogleUtilities', '~> 8.0'
+  pod 'FirebaseCoreInternal', '~> 10.0'
 
   target 'realspace3Tests' do
     inherit! :complete
@@ -19,9 +16,6 @@ target 'realspace3' do
   end
 
   post_install do |installer|
-    react_native_post_install(
-      installer,
-      :mac_catalyst_enabled => false
-    )
+    react_native_post_install(installer, :mac_catalyst_enabled => false)
   end
 end
