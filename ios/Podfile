@@ -31,4 +31,10 @@ end
 
 post_install do |installer|
   react_native_post_install(installer)
+
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64' # Essa linha evita problemas com M1 Macs.
+    end
+  end
 end
