@@ -1,70 +1,40 @@
+# Podfile
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-
+ 
 platform :ios, '14.0'
-
-# Define the framework linkage configuration
+ 
 linkage = ENV['USE_FRAMEWORKS']
-if linkage
+if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! :linkage => linkage.to_sym
 end
-
-# Main target configuration
+ 
 target 'realspace3' do
   config = use_native_modules!
-
-  # Define Firebase pods with modular headers
+ 
   pod 'Firebase/Core', :modular_headers => true
   pod 'Firebase/Auth', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
-
-  # Integrate React Native
+ 
   use_react_native!(
     :path => config[:reactNativePath],
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 end
 
-# Test target configuration
 target 'realspace3Tests' do
   inherit! :complete
   # Pods for testing
 end
 
-# Post-install script to handle configurations
 post_install do |installer|
   react_native_post_install(installer)
 
-  # Remove duplicate files from build phases
   installer.pods_project.targets.each do |target|
-    if target.name == "React-Codegen"
-      target.source_build_phase.files.each do |file|
-        if [
-          "ComponentDescriptors.cpp",
-          "EventEmitters.cpp",
-          "Props.cpp",
-          "ShadowNodes.cpp",
-          "States.cpp"
-        ].include?(file.display_name)
-          file.remove_from_project
-        end
-      end
-    end
-
-    # Exclude arm64 architecture for simulators on M1 Macs
     target.build_configurations.each do |config|
-      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
-    end
-  end
-
-  # Fix script ambiguity
-  installer.pods_project.targets.each do |target|
-    target.build_phases.each do |phase|
-      if phase.name == '[CP-User] [Hermes] Replace Hermes for the right configuration, if needed'
-        phase.run_only_for_deployment_postprocessing = '1'
-      end
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64' # Essa linha evita problemas com M1 Macs.
     end
   end
 end
