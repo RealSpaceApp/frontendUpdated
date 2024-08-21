@@ -4,13 +4,36 @@
     "slug": "realspace3",
     "version": "1.0.0",
     "orientation": "portrait",
-    "ios": {
-      "bundleIdentifier": "com.realspaceapp.id"
-    },
-    "android": {
-      "package": "com.realspaceapp.id"
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splassh.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
     "owner": "realspaceapp",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.realspaceapp.id",
+      "buildNumber": "1.0.0",
+      "jsEngine": "hermes"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.realspaceapp.id",
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "extra": {
       "eas": {
         "projectId": "90a8e020-0624-426b-a413-e5fb03f24986"
